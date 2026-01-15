@@ -1,0 +1,169 @@
+# Sample Tenant Configuration
+# This is an example configuration that can be used for testing
+
+{
+  "id": "demo-tenant-001",
+  "slug": "demo",
+  "name": "Demo Company",
+  "branding": {
+    "name": "Demo Company",
+    "logo": {
+      "light": "/logo-light.svg",
+      "dark": "/logo-dark.svg"
+    },
+    "favicon": "/favicon.ico",
+    "tagline": "Your Success is Our Mission",
+    "description": "Leading provider of innovative solutions"
+  },
+  "theme": {
+    "colors": {
+      "primary": "#3b82f6",
+      "secondary": "#8b5cf6",
+      "accent": "#06b6d4",
+      "background": "#ffffff",
+      "surface": "#f9fafb",
+      "text": {
+        "primary": "#111827",
+        "secondary": "#6b7280",
+        "inverse": "#ffffff"
+      },
+      "error": "#ef4444",
+      "success": "#10b981",
+      "warning": "#f59e0b"
+    },
+    "fonts": {
+      "primary": "Inter, system-ui, sans-serif",
+      "secondary": "Georgia, serif",
+      "sizes": {
+        "xs": "0.75rem",
+        "sm": "0.875rem",
+        "base": "1rem",
+        "lg": "1.125rem",
+        "xl": "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem"
+      }
+    },
+    "spacing": {
+      "xs": "0.25rem",
+      "sm": "0.5rem",
+      "md": "1rem",
+      "lg": "1.5rem",
+      "xl": "2rem",
+      "2xl": "3rem"
+    },
+    "borderRadius": {
+      "sm": "0.25rem",
+      "md": "0.5rem",
+      "lg": "1rem",
+      "full": "9999px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+      "md": "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+      "lg": "0 10px 15px -3px rgb(0 0 0 / 0.1)"
+    }
+  },
+  "featureFlags": {
+    "enableNewDashboard": true,
+    "showBetaFeatures": false,
+    "enableAnalytics": true
+  },
+  "layoutPreferences": {
+    "headerStyle": "default",
+    "footerStyle": "default",
+    "landingPageLayout": "multi-section"
+  },
+  "landingPageSections": [
+    {
+      "id": "hero-section",
+      "componentType": "hero",
+      "order": 1,
+      "visible": true,
+      "props": {
+        "title": "Transform Your Business with Demo Company",
+        "subtitle": "Innovative solutions designed to help your business thrive in the digital age",
+        "ctaText": "Get Started Free",
+        "ctaLink": "/register",
+        "align": "center"
+      }
+    },
+    {
+      "id": "features-section",
+      "componentType": "featureGrid",
+      "order": 2,
+      "visible": true,
+      "props": {
+        "title": "Why Choose Us",
+        "subtitle": "Everything you need to succeed",
+        "columns": 3,
+        "features": [
+          {
+            "id": "feature-1",
+            "icon": "🚀",
+            "title": "Lightning Fast",
+            "description": "Optimized for speed and performance. Get results in milliseconds, not seconds."
+          },
+          {
+            "id": "feature-2",
+            "icon": "🔒",
+            "title": "Secure by Design",
+            "description": "Enterprise-grade security with end-to-end encryption and compliance."
+          },
+          {
+            "id": "feature-3",
+            "icon": "💡",
+            "title": "Smart Automation",
+            "description": "AI-powered automation to streamline your workflows and save time."
+          },
+          {
+            "id": "feature-4",
+            "icon": "📊",
+            "title": "Real-time Analytics",
+            "description": "Gain insights with comprehensive dashboards and reporting tools."
+          },
+          {
+            "id": "feature-5",
+            "icon": "🌐",
+            "title": "Global Scale",
+            "description": "Deploy anywhere with multi-region support and CDN integration."
+          },
+          {
+            "id": "feature-6",
+            "icon": "🤝",
+            "title": "24/7 Support",
+            "description": "Expert support team available around the clock to help you succeed."
+          }
+        ]
+      }
+    },
+    {
+      "id": "content-section",
+      "componentType": "contentSection",
+      "order": 3,
+      "visible": true,
+      "props": {
+        "title": "Built for Modern Teams",
+        "subtitle": "Collaboration tools that scale with your organization",
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "cta-section",
+      "componentType": "ctaSection",
+      "order": 4,
+      "visible": true,
+      "props": {
+        "title": "Ready to Get Started?",
+        "description": "Join thousands of companies already using our platform to drive growth",
+        "buttonText": "Start Your Free Trial",
+        "buttonLink": "/register"
+      }
+    }
+  ],
+  "customSettings": {
+    "enableChat": true,
+    "defaultLanguage": "en",
+    "timezone": "America/New_York"
+  }
+}

@@ -1,0 +1,32 @@
+.content-section {
+  padding: var(--spacing-2xl) 0;
+}
+
+.content-title {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+}
+
+.content-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xl);
+}
+
+.content-body {
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+}
+
+.content-align-left {
+  text-align: left;
+}
+
+.content-align-center {
+  text-align: center;
+}
+
+.content-align-right {
+  text-align: right;
+}
