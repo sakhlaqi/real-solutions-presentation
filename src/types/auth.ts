@@ -21,6 +21,7 @@ export interface AuthTokens {
 export interface LoginCredentials {
   email: string;
   password: string;
+  tenant?: string;
 }
 
 export interface RegisterData {

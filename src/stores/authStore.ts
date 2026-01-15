@@ -30,7 +30,14 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   login: async (credentials: LoginCredentials) => {
     set({ isLoading: true, error: null });
     try {
-      const { tokens, user } = await AuthService.login(credentials);
+      // Get tenant slug from tenant store if not provided
+      const { useTenantStore } = await import('./tenantStore');
+      const tenantSlug = credentials.tenant || useTenantStore.getState().tenantSlug;
+      
+      const { tokens, user } = await AuthService.login({
+        ...credentials,
+        tenant: tenantSlug,
+      });
       TokenManager.setTokens(tokens);
       set({
         user,

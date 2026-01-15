@@ -40,7 +40,7 @@ http://localhost:3000?tenant=demo
 ```
 
 ### Test Authentication
-1. Make sure backend API is running on `http://localhost:8000`
+1. Make sure backend API is running on `http://localhost:8000/api/v1`
 2. Navigate to `http://localhost:3000/login?tenant=demo`
 3. Login with test credentials
 4. You'll be redirected to dashboard
