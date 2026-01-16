@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Button } from '@sakhlaqi/ui';
+import { Button, Heading, Text } from '@sakhlaqi/ui';
 import './CTASection.css';
 
 export interface CTASectionProps {
@@ -37,8 +37,8 @@ export const CTASection: React.FC<CTASectionProps> = ({
   return (
     <section className="cta-section" style={style}>
       <div className="container cta-content">
-        <h2 className="cta-title">{title}</h2>
-        {description && <p className="cta-description">{description}</p>}
+        <Heading level={2} className="cta-title">{title}</Heading>
+        {description && <Text size="lg" className="cta-description">{description}</Text>}
         <Button size="lg" variant="secondary" onClick={handleClick}>
           {buttonText}
         </Button>

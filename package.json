@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sakhlaqi/ui": "file:../ui",
+    "@sakhlaqi/ui": "^1.0.3",
     "axios": "^1.13.2",
     "jwt-decode": "^4.0.0",
     "react": "^19.2.0",

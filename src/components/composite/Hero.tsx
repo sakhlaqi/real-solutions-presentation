@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Button } from '@sakhlaqi/ui';
+import { Button, Heading, Text } from '@sakhlaqi/ui';
 import './Hero.css';
 
 export interface HeroProps {
@@ -42,8 +42,8 @@ export const Hero: React.FC<HeroProps> = ({
     <section className={`hero hero-align-${align}`} style={style}>
       <div className="hero-overlay">
         <div className="container hero-content">
-          <h1 className="hero-title">{title}</h1>
-          {subtitle && <p className="hero-subtitle">{subtitle}</p>}
+          <Heading level={1} className="hero-title">{title}</Heading>
+          {subtitle && <Text size="lg" className="hero-subtitle">{subtitle}</Text>}
           {ctaText && (
             <Button size="lg" onClick={handleCtaClick}>
               {ctaText}

@@ -23,5 +23,4 @@ export { DynamicComponentRenderer } from './DynamicComponentRenderer';
 // ============================================================================
 // UTILITY COMPONENTS (App-specific)
 // ============================================================================
-export { LoadingSpinner } from './LoadingSpinner';
 export { ProtectedRoute } from './ProtectedRoute';

@@ -5,8 +5,7 @@
 
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, ErrorBoundary } from '@sakhlaqi/ui';
-import { LoadingSpinner } from './components/LoadingSpinner';
+import { ThemeProvider, ErrorBoundary, Spinner, Heading, Text, Button } from '@sakhlaqi/ui';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { MainLayout, AdminLayout } from './components/layout';
 import { LandingPage } from './pages/LandingPage';
@@ -19,15 +18,20 @@ const App: React.FC = () => {
   const { isInitialized, error } = useAppBootstrap();
 
   if (!isInitialized) {
-    return <LoadingSpinner fullScreen message="Initializing application..." />;
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '1rem' }}>
+        <Spinner size="lg" />
+        <Text size="md">Initializing application...</Text>
+      </div>
+    );
   }
 
   if (error) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--color-error)' }}>Initialization Error</h2>
-        <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Reload</button>
+        <Heading level={2}>Initialization Error</Heading>
+        <Text size="md" color="error">{error}</Text>
+        <Button onClick={() => window.location.reload()}>Reload</Button>
       </div>
     );
   }
@@ -36,7 +40,11 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <ThemeProvider>
         <BrowserRouter>
-          <Suspense fallback={<LoadingSpinner fullScreen />}>
+          <Suspense fallback={
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+              <Spinner size="lg" />
+            </div>
+          }>
             <Routes>
               {/* Public routes with MainLayout */}
               <Route path="/" element={<MainLayout />}>
@@ -58,26 +66,26 @@ const App: React.FC = () => {
                 <Route index element={<DashboardPage />} />
                 <Route path="projects" element={
                   <div style={{ padding: '2rem' }}>
-                    <h1>Projects</h1>
-                    <p>Projects management page coming soon...</p>
+                    <Heading level={1}>Projects</Heading>
+                    <Text size="md">Projects management page coming soon...</Text>
                   </div>
                 } />
                 <Route path="settings" element={
                   <div style={{ padding: '2rem' }}>
-                    <h1>Settings</h1>
-                    <p>Settings page coming soon...</p>
+                    <Heading level={1}>Settings</Heading>
+                    <Text size="md">Settings page coming soon...</Text>
                   </div>
                 } />
                 <Route path="branding" element={
                   <div style={{ padding: '2rem' }}>
-                    <h1>Branding</h1>
-                    <p>Branding editor coming soon...</p>
+                    <Heading level={1}>Branding</Heading>
+                    <Text size="md">Branding editor coming soon...</Text>
                   </div>
                 } />
                 <Route path="landing-page" element={
                   <div style={{ padding: '2rem' }}>
-                    <h1>Landing Page</h1>
-                    <p>Landing page editor coming soon...</p>
+                    <Heading level={1}>Landing Page</Heading>
+                    <Text size="md">Landing page editor coming soon...</Text>
                   </div>
                 } />
               </Route>

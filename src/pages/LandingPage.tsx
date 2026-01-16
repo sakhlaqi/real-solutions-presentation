@@ -4,6 +4,7 @@
  */
 
 import React, { useMemo } from 'react';
+import { Heading, Text } from '@sakhlaqi/ui';
 import { useTenantStore } from '../stores';
 import { DynamicComponentRenderer } from '../components/DynamicComponentRenderer';
 
@@ -20,7 +21,7 @@ export const LandingPage: React.FC = () => {
   if (!config) {
     return (
       <div className="container" style={{ padding: '2rem', textAlign: 'center' }}>
-        <p>Loading tenant configuration...</p>
+        <Text size="md">Loading tenant configuration...</Text>
       </div>
     );
   }
@@ -28,8 +29,8 @@ export const LandingPage: React.FC = () => {
   if (sortedSections.length === 0) {
     return (
       <div className="container" style={{ padding: '2rem', textAlign: 'center' }}>
-        <h2>Welcome to {config.name}</h2>
-        <p>No landing page sections configured.</p>
+        <Heading level={2}>Welcome to {config.name}</Heading>
+        <Text size="md">No landing page sections configured.</Text>
       </div>
     );
   }

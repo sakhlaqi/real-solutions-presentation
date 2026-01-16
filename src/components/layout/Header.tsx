@@ -5,8 +5,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button, Text } from '@sakhlaqi/ui';
 import { useAuthStore, useTenantStore } from '../../stores';
-import { Button } from '@sakhlaqi/ui';
 import './Header.css';
 
 export const Header: React.FC = () => {
@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
               <Link to="/admin" className="header-link">
                 Admin Dashboard
               </Link>
-              <span className="header-user">{user?.email}</span>
+              <Text size="sm" className="header-user">{user?.email}</Text>
               <Button variant="ghost" size="sm" onClick={handleLogout}>
                 Logout
               </Button>

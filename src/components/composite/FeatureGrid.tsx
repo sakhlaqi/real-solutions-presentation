@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Card, Text } from '@sakhlaqi/ui';
+import { Card, Text, Heading } from '@sakhlaqi/ui';
 import './FeatureGrid.css';
 
 export interface Feature {
@@ -32,8 +32,8 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({
       <div className="container">
         {(title || subtitle) && (
           <div className="feature-grid-header">
-            {title && <h2 className="feature-grid-title">{title}</h2>}
-            {subtitle && <Text className="feature-grid-subtitle">{subtitle}</Text>}
+            {title && <Heading level={2} className="feature-grid-title">{title}</Heading>}
+            {subtitle && <Text size="lg" className="feature-grid-subtitle">{subtitle}</Text>}
           </div>
         )}
         <div className={`feature-grid feature-grid-cols-${columns}`}>
@@ -44,7 +44,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({
                   {feature.icon}
                 </div>
               )}
-              <h3 className="feature-title">{feature.title}</h3>
+              <Heading level={3} className="feature-title">{feature.title}</Heading>
               <Text color="secondary">{feature.description}</Text>
             </Card>
           ))}

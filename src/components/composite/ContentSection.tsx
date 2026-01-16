@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { Heading, Text } from '@sakhlaqi/ui';
 import './ContentSection.css';
 
 export interface ContentSectionProps {
@@ -26,8 +27,8 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
   return (
     <section className="content-section" style={style}>
       <div className={`container content-align-${textAlign}`}>
-        {title && <h2 className="content-title">{title}</h2>}
-        {subtitle && <p className="content-subtitle">{subtitle}</p>}
+        {title && <Heading level={2} className="content-title">{title}</Heading>}
+        {subtitle && <Text size="lg" className="content-subtitle">{subtitle}</Text>}
         <div className="content-body">{children}</div>
       </div>
     </section>

@@ -11,9 +11,9 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { Spinner, Text } from '@sakhlaqi/ui';
 import { useAuthStore } from '../stores';
 import { TokenManager } from '../utils/tokenManager';
-import { LoadingSpinner } from './LoadingSpinner';
 
 export interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -59,10 +59,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   // Show loading while checking authentication state
   if (isLoading || isCheckingSession) {
     return (
-      <LoadingSpinner 
-        fullScreen 
-        message="Verifying session..." 
-      />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '1rem' }}>
+        <Spinner size="lg" />
+        <Text size="md">Verifying session...</Text>
+      </div>
     );
   }
 
