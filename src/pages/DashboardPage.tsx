@@ -17,25 +17,28 @@ export const DashboardPage: React.FC = () => {
     fetchProjects();
   }, [fetchProjects]);
 
+  // Ensure projects is always an array
+  const projectsList = Array.isArray(projects) ? projects : [];
+
   const stats = [
     {
       label: 'Total Projects',
-      value: projects.length,
+      value: projectsList.length,
       icon: '📁',
     },
     {
       label: 'Active Projects',
-      value: projects.filter((p) => p.status === 'active').length,
+      value: projectsList.filter((p) => p.status === 'active').length,
       icon: '✅',
     },
     {
       label: 'Completed Projects',
-      value: projects.filter((p) => p.status === 'completed').length,
+      value: projectsList.filter((p) => p.status === 'completed').length,
       icon: '🎉',
     },
     {
       label: 'Archived Projects',
-      value: projects.filter((p) => p.status === 'archived').length,
+      value: projectsList.filter((p) => p.status === 'archived').length,
       icon: '📦',
     },
   ];
@@ -108,13 +111,13 @@ export const DashboardPage: React.FC = () => {
           <Text variant="body" color="secondary">
             Loading projects...
           </Text>
-        ) : projects.length === 0 ? (
+        ) : projectsList.length === 0 ? (
           <Text variant="body" color="secondary">
             No projects yet. Create your first project!
           </Text>
         ) : (
           <div className="projects-list">
-            {projects.slice(0, 5).map((project) => (
+            {projectsList.slice(0, 5).map((project) => (
               <div key={project.id} className="project-item">
                 <div className="project-info">
                   <Text variant="body" weight={600}>

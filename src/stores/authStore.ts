@@ -34,11 +34,15 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       const { useTenantStore } = await import('./tenantStore');
       const tenantSlug = credentials.tenant || useTenantStore.getState().tenantSlug;
       
-      const { tokens, user } = await AuthService.login({
+      const tokens = await AuthService.login({
         ...credentials,
         tenant: tenantSlug,
       });
       TokenManager.setTokens(tokens);
+      
+      // Fetch user info separately
+      const user = await AuthService.getCurrentUser();
+      
       set({
         user,
         tokens,

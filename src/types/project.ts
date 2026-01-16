@@ -9,6 +9,7 @@ export interface Project {
   description?: string;
   tenantId: string;
   isActive: boolean;
+  status?: 'active' | 'completed' | 'archived' | 'draft';
   createdAt: string;
   updatedAt: string;
   metadata?: Record<string, any>;

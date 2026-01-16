@@ -10,7 +10,7 @@ export class AuthService {
   /**
    * Login with email and password
    */
-  static async login(credentials: LoginCredentials): Promise<{ tokens: AuthTokens; user: User }> {
+  static async login(credentials: LoginCredentials): Promise<AuthTokens> {
     return apiClient.post('/auth/login/', credentials);
   }
 
