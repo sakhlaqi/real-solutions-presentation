@@ -10,7 +10,8 @@ A production-grade, multi-tenant front-end application built with React, TypeScr
 ✅ **Subdomain-based tenant resolution** - Automatic tenant detection  
 ✅ **Dynamic theming** - Per-tenant colors, fonts, and styles using CSS variables  
 ✅ **Configurable landing pages** - Component-based, data-driven pages  
-✅ **UI Component Library** - [@sakhlaqi/ui](../ui) - Production-ready React components  
+✅ **UI Component Library** - [@sakhlaqi/ui](../ui) v3.0 - Triple-provider support (Internal, Material-UI, Radix UI)  
+✅ **Provider switching** - Switch between UI frameworks at runtime  
 ✅ **JWT authentication** - Secure API communication with token refresh  
 ✅ **Token management** - Automatic refresh, session validation  
 ✅ **Error handling** - Centralized error utilities with user-friendly messages  

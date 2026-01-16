@@ -5,6 +5,22 @@ All notable changes to the Real Solutions Presentation will be documented in thi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **UI Library Update** - Upgraded to [@sakhlaqi/ui](../ui) v3.0.0
+  - Now supports three UI providers: Internal, Material-UI, and Radix UI
+  - Added Radix UI provider option in ComponentShowcase
+  - Updated provider switcher with three-way toggle
+  - All components now work with Radix UI primitives
+
+### Added
+- **Radix UI Support** - ComponentShowcase now includes Radix UI button
+  - Third provider option alongside Internal and Material-UI
+  - Color-coded button (secondary) for Radix selection
+  - Alert notification shows "Radix UI (NEW in v3.0.0)" when active
+  - Real-time provider switching between all three frameworks
+
 ## [1.1.0] - 2026-01-15
 
 ### Added

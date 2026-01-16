@@ -137,7 +137,7 @@ const ShowcaseContent: React.FC = () => {
               <div>
                 <Text weight="semibold">UI Provider</Text>
                 <Text size="sm" color="secondary">
-                  Switch between Material-UI and internal components
+                  Switch between Internal, Material-UI, and Radix UI components
                 </Text>
               </div>
               <ButtonGroup>
@@ -153,12 +153,24 @@ const ShowcaseContent: React.FC = () => {
                 >
                   Material-UI
                 </Button>
+                <Button 
+                  variant={provider === 'radix' ? 'contained' : 'outlined'}
+                  onClick={() => setProvider('radix')}
+                  color="secondary"
+                >
+                  Radix UI
+                </Button>
               </ButtonGroup>
             </div>
             <Spacer size="sm" />
             <Alert variant="standard">
-              Current Provider: <strong>{provider === 'mui' ? 'Material-UI (MUI)' : 'Internal Components'}</strong>
+              Current Provider: <strong>
+                {provider === 'mui' && 'Material-UI (MUI)'}
+                {provider === 'internal' && 'Internal Components'}
+                {provider === 'radix' && 'Radix UI'}
+              </strong>
               {provider === 'mui' && ' - Adaptive components now use Material-UI implementation'}
+              {provider === 'radix' && ' - Adaptive components now use Radix UI implementation (NEW in v3.0.0)'}
             </Alert>
             
             <Spacer size="md" />
