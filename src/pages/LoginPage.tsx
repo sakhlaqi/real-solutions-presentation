@@ -69,7 +69,6 @@ export const LoginPage: React.FC = () => {
           )}
 
           <Input
-            type="email"
             name="email"
             label="Email"
             value={credentials.email}
@@ -81,7 +80,6 @@ export const LoginPage: React.FC = () => {
           />
 
           <Input
-            type="password"
             name="password"
             label="Password"
             value={credentials.password}
@@ -94,7 +92,7 @@ export const LoginPage: React.FC = () => {
 
           <Button
             type="submit"
-            variant="primary"
+            variant="contained"
             fullWidth
             disabled={isLoading}
           >

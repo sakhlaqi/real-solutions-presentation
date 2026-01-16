@@ -45,7 +45,7 @@ export const Hero: React.FC<HeroProps> = ({
           <Heading level={1} className="hero-title">{title}</Heading>
           {subtitle && <Text size="lg" className="hero-subtitle">{subtitle}</Text>}
           {ctaText && (
-            <Button size="lg" onClick={handleCtaClick}>
+            <Button onClick={handleCtaClick}>
               {ctaText}
             </Button>
           )}

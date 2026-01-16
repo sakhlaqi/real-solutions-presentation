@@ -14,11 +14,11 @@ export const UILibraryExample: React.FC = () => {
         Testing components from @sakhlaqi/ui package
       </Text>
 
-      <Alert variant="success">
+      <Alert variant="filled">
         🎉 Successfully installed @sakhlaqi/ui from GitHub Packages!
       </Alert>
 
-      <Card interactive style={{ marginBottom: '2rem' }}>
+      <Card padding="lg">
         <Heading level={3}>Form Components</Heading>
         <div style={{ marginTop: '1rem' }}>
           <Input
@@ -29,14 +29,14 @@ export const UILibraryExample: React.FC = () => {
           />
         </div>
         <div style={{ marginTop: '1rem', display: 'flex', gap: '1rem' }}>
-          <Button variant="primary" onClick={() => alert('Primary clicked!')}>
+          <Button variant="contained" onClick={() => alert('Primary clicked!')}>
             Primary Button
           </Button>
-          <Button variant="secondary" onClick={() => setInputValue('')}>
+          <Button variant="outlined" onClick={() => setInputValue('')}>
             Clear Input
           </Button>
-          <Button variant="danger" size="sm">
-            Danger
+          <Button variant="text">
+            Text Button
           </Button>
         </div>
       </Card>

@@ -39,7 +39,7 @@ export const CTASection: React.FC<CTASectionProps> = ({
       <div className="container cta-content">
         <Heading level={2} className="cta-title">{title}</Heading>
         {description && <Text size="lg" className="cta-description">{description}</Text>}
-        <Button size="lg" variant="secondary" onClick={handleClick}>
+        <Button variant="outlined" onClick={handleClick}>
           {buttonText}
         </Button>
       </div>

@@ -40,7 +40,7 @@ export const AdminLayout: React.FC = () => {
 
       <div className="admin-user-menu">
         <Text size="sm" className="admin-user-email">{user?.email}</Text>
-        <Button variant="ghost" size="sm" onClick={handleLogout}>
+        <Button variant="text" onClick={handleLogout}>
           Logout
         </Button>
       </div>
@@ -65,6 +65,9 @@ export const AdminLayout: React.FC = () => {
         ⚙️ Settings
       </Link>
       <div className="admin-sidebar-divider" />
+      <Link to="/components" className="admin-sidebar-link">
+        🧩 Component Library
+      </Link>
       <Link to="/" className="admin-sidebar-link">
         🌐 View Public Site
       </Link>

@@ -38,7 +38,7 @@ export const FeatureGrid: React.FC<FeatureGridProps> = ({
         )}
         <div className={`feature-grid feature-grid-cols-${columns}`}>
           {features.map((feature) => (
-            <Card key={feature.id} hover padding="lg">
+            <Card key={feature.id} padding="lg">
               {feature.icon && (
                 <div className="feature-icon" aria-hidden="true">
                   {feature.icon}
