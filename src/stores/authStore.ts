@@ -1,12 +1,20 @@
 /**
  * Authentication Store
- * Manages authentication state using Zustand
+ * Manages authentication state using Zustand with improved error handling.
+ * 
+ * Architecture:
+ * - Centralized auth state management
+ * - Token lifecycle management via TokenManager
+ * - Integration with tenant context
+ * - Normalized error handling
  */
 
 import { create } from 'zustand';
 import type { AuthState, User, AuthTokens, LoginCredentials } from '../types';
 import { AuthService } from '../api';
 import { TokenManager } from '../utils/tokenManager';
+import { getErrorMessage, logError, isAuthError } from '../utils/errorHandler';
+import type { ApiError } from '../api/client';
 
 interface AuthStore extends AuthState {
   // Actions
@@ -16,6 +24,8 @@ interface AuthStore extends AuthState {
   setUser: (user: User | null) => void;
   setTokens: (tokens: AuthTokens | null) => void;
   clearError: () => void;
+  /** Check and refresh session if needed */
+  refreshSession: () => Promise<boolean>;
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
@@ -50,8 +60,12 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         isLoading: false,
         error: null,
       });
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || 'Login failed';
+    } catch (error) {
+      const apiError = error as ApiError;
+      const errorMessage = getErrorMessage(apiError);
+      
+      logError(apiError, { action: 'login', username: credentials.username });
+      
       set({
         isLoading: false,
         error: errorMessage,
@@ -65,10 +79,13 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   logout: async () => {
     set({ isLoading: true });
     try {
+      // Attempt server-side logout
       await AuthService.logout();
     } catch (error) {
-      console.error('Logout error:', error);
+      // Log but don't block logout on server errors
+      console.warn('Server logout failed:', error);
     } finally {
+      // Always clear local state
       TokenManager.clearTokens();
       set({
         user: null,
@@ -90,9 +107,17 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
     // Check if access token is expired
     if (TokenManager.isTokenExpired(tokens.access)) {
-      TokenManager.clearTokens();
-      set({ isLoading: false, isAuthenticated: false });
-      return;
+      // Try to refresh if refresh token is valid
+      if (tokens.refresh && !TokenManager.isTokenExpired(tokens.refresh)) {
+        const refreshed = await get().refreshSession();
+        if (!refreshed) {
+          return;
+        }
+      } else {
+        TokenManager.clearTokens();
+        set({ isLoading: false, isAuthenticated: false });
+        return;
+      }
     }
 
     set({ isLoading: true });
@@ -100,20 +125,53 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       const user = await AuthService.getCurrentUser();
       set({
         user,
-        tokens,
+        tokens: TokenManager.getTokens(),
         isAuthenticated: true,
         isLoading: false,
         error: null,
       });
     } catch (error) {
-      TokenManager.clearTokens();
+      const apiError = error as ApiError;
+      
+      // Only clear tokens on auth errors
+      if (isAuthError(apiError)) {
+        TokenManager.clearTokens();
+      }
+      
+      logError(apiError, { action: 'loadUser' });
+      
       set({
         user: null,
         tokens: null,
         isAuthenticated: false,
         isLoading: false,
-        error: 'Failed to load user',
+        error: null, // Don't show error for background loads
       });
+    }
+  },
+
+  // Refresh session
+  refreshSession: async () => {
+    const tokens = TokenManager.getTokens();
+    if (!tokens?.refresh) {
+      return false;
+    }
+
+    try {
+      const newTokens = await AuthService.refreshToken(tokens.refresh);
+      TokenManager.setTokens(newTokens);
+      set({ tokens: newTokens });
+      return true;
+    } catch (error) {
+      logError(error as ApiError, { action: 'refreshSession' });
+      TokenManager.clearTokens();
+      set({
+        user: null,
+        tokens: null,
+        isAuthenticated: false,
+        error: null,
+      });
+      return false;
     }
   },
 
