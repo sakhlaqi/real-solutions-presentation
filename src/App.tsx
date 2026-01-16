@@ -21,8 +21,9 @@ const App: React.FC = () => {
   if (!isInitialized) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '1rem' }}>
-        <Spinner size="lg" />
-        <Text size="md">Initializing application...</Text>
+        <div className="spinner" style={{ width: '48px', height: '48px', border: '4px solid #f3f3f3', borderTop: '4px solid #3498db', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+        <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+        <p style={{ fontSize: '1rem', color: '#666' }}>Initializing application...</p>
       </div>
     );
   }
@@ -30,9 +31,9 @@ const App: React.FC = () => {
   if (error) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <Heading level={2}>Initialization Error</Heading>
-        <Text size="md" color="error">{error}</Text>
-        <Button onClick={() => window.location.reload()}>Reload</Button>
+        <h2>Initialization Error</h2>
+        <p style={{ color: '#d32f2f' }}>{error}</p>
+        <button onClick={() => window.location.reload()}>Reload</button>
       </div>
     );
   }
@@ -44,7 +45,7 @@ const App: React.FC = () => {
           <BrowserRouter>
           <Suspense fallback={
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-              <Spinner size="lg" />
+              <Spinner size="large" />
             </div>
           }>
             <Routes>

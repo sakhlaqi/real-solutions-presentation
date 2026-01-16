@@ -35,7 +35,7 @@ import {
   TextareaAutosize,
   Select,
   Checkbox,
-  Toggle,
+  Switch,
   RadioGroup,
   PasswordInput,
   EmailInput,
@@ -43,6 +43,7 @@ import {
   DatePicker,
   Rating,
   Slider,
+  Autocomplete,
   // Data Display
   Badge,
   Avatar,
@@ -61,6 +62,8 @@ import {
   ProgressBar,
   ProgressCircle,
   SkeletonLoader,
+  Skeleton,
+  LinearProgress,
   EmptyState,
   Toast,
   Snackbar,
@@ -69,12 +72,20 @@ import {
   Tabs,
   Stepper,
   Pagination,
+  AppBar,
+  BottomNavigation,
+  Menu,
   // Overlay
   Modal,
   Dialog,
+  Drawer,
   SlideOver,
+  Popover,
+  Backdrop,
   // Utility
   useMediaQuery,
+  Toolbar,
+  SpeedDial,
 } from '@sakhlaqi/ui';
 import './ComponentShowcase.css';
 
@@ -99,6 +110,14 @@ const ShowcaseContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState('tab1');
   const [currentPage, setCurrentPage] = useState(1);
   const [currentStep, setCurrentStep] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
+  const [autocompleteValue, setAutocompleteValue] = useState<{ value: string; label: string } | null>(null);
+  const [expandedAccordion, setExpandedAccordion] = useState<string>('');
+  const [bottomNavValue, setBottomNavValue] = useState(0);
+  const [speedDialOpen, setSpeedDialOpen] = useState(false);
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLElement | null>(null);
+  const [backdropOpen, setBackdropOpen] = useState(false);
   const isTablet = useMediaQuery('md');
 
   return (
@@ -141,6 +160,52 @@ const ShowcaseContent: React.FC = () => {
               Current Provider: <strong>{provider === 'mui' ? 'Material-UI (MUI)' : 'Internal Components'}</strong>
               {provider === 'mui' && ' - Adaptive components now use Material-UI implementation'}
             </Alert>
+            
+            <Spacer size="md" />
+            <Divider />
+            <Spacer size="md" />
+            
+            <Heading level={4}>45 Adaptive Components Available</Heading>
+            <Text size="sm" color="secondary">All components below switch between providers automatically</Text>
+            <Spacer size="sm" />
+            <Grid columns={3} gap="sm">
+              <GridItem>
+                <Text size="sm" weight="semibold">Forms (8):</Text>
+                <Text size="xs">Button, IconButton, Input, Select, Checkbox, Rating, Textarea, RadioGroup</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Data Display (8):</Text>
+                <Text size="xs">Table, TreeView, Card, Tooltip, Badge, Avatar, Chip, List</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Feedback (7):</Text>
+                <Text size="xs">Alert, Spinner, Slider, Switch, Progress, Skeleton, LinearProgress</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Overlay (3):</Text>
+                <Text size="xs">Modal, Snackbar, Drawer</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Charts (3):</Text>
+                <Text size="xs">LineChart, BarChart, PieChart</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Navigation (6):</Text>
+                <Text size="xs">Tabs, Breadcrumbs, Pagination, Stepper, Menu, BottomNavigation</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Layout (5):</Text>
+                <Text size="xs">Accordion, Dialog, AppBar, Divider, Popover</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Buttons (3):</Text>
+                <Text size="xs">ButtonGroup, ToggleButton, SpeedDial</Text>
+              </GridItem>
+              <GridItem>
+                <Text size="sm" weight="semibold">Utility (2):</Text>
+                <Text size="xs">DatePicker, Backdrop, Toolbar</Text>
+              </GridItem>
+            </Grid>
           </Card>
         </div>
 
@@ -334,16 +399,16 @@ const ShowcaseContent: React.FC = () => {
             
             <GridItem>
               <Card padding="lg">
-                <Heading level={3}>Toggle</Heading>
+                <Heading level={3}>Switch</Heading>
                 <Spacer size="sm" />
-                <Toggle
+                <Switch
                   label="Enable notifications"
                   checked={toggleValue}
                   onChange={(checked) => setToggleValue(checked)}
                 />
                 <Spacer size="sm" />
-                <Toggle
-                  label="Disabled toggle"
+                <Switch
+                  label="Disabled switch"
                   checked={false}
                   disabled
                 />
@@ -495,6 +560,25 @@ const ShowcaseContent: React.FC = () => {
             
             <Spacer size="xl" />
             
+            <Heading level={3}>Linear Progress (Adaptive - NEW)</Heading>
+            <Text size="sm" color="secondary">New adaptive component - switches between providers</Text>
+            <Spacer size="sm" />
+            <Text size="xs" color="muted">Indeterminate:</Text>
+            <Spacer size="xs" />
+            <LinearProgress variant="indeterminate" />
+            <Spacer size="md" />
+            <Text size="xs" color="muted">Determinate with values:</Text>
+            <Spacer size="xs" />
+            <LinearProgress value={25} variant="determinate" />
+            <Spacer size="sm" />
+            <LinearProgress value={50} variant="determinate" color="secondary" />
+            <Spacer size="sm" />
+            <LinearProgress value={75} variant="determinate" />
+            <Spacer size="sm" />
+            <LinearProgress value={100} variant="determinate" />
+            
+            <Spacer size="xl" />
+            
             <Heading level={3}>Snackbar (Adaptive)</Heading>
             <Spacer size="sm" />
             <Button onClick={() => setSnackbarOpen(true)}>
@@ -555,14 +639,27 @@ const ShowcaseContent: React.FC = () => {
           <Grid columns={2} gap="lg">
             <GridItem>
               <Card padding="lg">
-                <Heading level={3}>Rating</Heading>
+                <Heading level={3}>Rating (Adaptive - NEW)</Heading>
+                <Text size="sm" color="secondary">New adaptive component</Text>
                 <Spacer size="sm" />
+                <Text size="sm">Value: {ratingValue} / 5</Text>
+                <Spacer size="xs" />
                 <Rating
                   value={ratingValue}
                   onChange={setRatingValue}
                   max={5}
                   showValue
                   label="Rate this product"
+                  precision={0.5}
+                />
+                <Spacer size="md" />
+                <Text size="sm">Read-only:</Text>
+                <Spacer size="xs" />
+                <Rating
+                  value={4.5}
+                  max={5}
+                  precision={0.5}
+                  readOnly
                 />
                 
                 <Spacer size="lg" />
@@ -637,6 +734,35 @@ const ShowcaseContent: React.FC = () => {
           <Spacer size="md" />
           
           <Card padding="lg">
+            <Heading level={3}>Button Group (Adaptive - NEW)</Heading>
+            <Text size="sm" color="secondary">New adaptive component - switches between providers</Text>
+            <Spacer size="sm" />
+            <Text size="xs" color="muted">Contained variant:</Text>
+            <Spacer size="xs" />
+            <ButtonGroup variant="contained" size="medium" orientation="horizontal">
+              <Button>One</Button>
+              <Button>Two</Button>
+              <Button>Three</Button>
+            </ButtonGroup>
+            <Spacer size="md" />
+            <Text size="xs" color="muted">Outlined variant:</Text>
+            <Spacer size="xs" />
+            <ButtonGroup variant="outlined" size="medium">
+              <Button>Left</Button>
+              <Button>Center</Button>
+              <Button>Right</Button>
+            </ButtonGroup>
+            <Spacer size="md" />
+            <Text size="xs" color="muted">Text variant:</Text>
+            <Spacer size="xs" />
+            <ButtonGroup variant="text" size="medium">
+              <Button>Option A</Button>
+              <Button>Option B</Button>
+              <Button>Option C</Button>
+            </ButtonGroup>
+            
+            <Spacer size="lg" />
+            
             <Heading level={3}>Toggle Button</Heading>
             <Spacer size="sm" />
             <ToggleButton
@@ -671,6 +797,74 @@ const ShowcaseContent: React.FC = () => {
               ]}
             />
           </Card>
+        </Section>
+
+        <Spacer size="xl" />
+        
+        {/* Phase 4 Overlay Components */}
+        <Section>
+          <Heading level={2}>Phase 4 Overlay (Adaptive - NEW)</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          <Grid columns={2} gap="lg">
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Speed Dial</Heading>
+                <Text size="sm" color="secondary">Floating action button with expandable actions</Text>
+                <Spacer size="sm" />
+                <div style={{ position: 'relative', height: '200px' }}>
+                  <SpeedDial
+                    icon={<span style={{ fontSize: '24px' }}>+</span>}
+                    ariaLabel="Speed Dial Actions"
+                    direction="up"
+                    actions={[
+                      { name: 'Copy', icon: <span>📋</span>, onClick: () => alert('Copy') },
+                      { name: 'Save', icon: <span>💾</span>, onClick: () => alert('Save') },
+                      { name: 'Share', icon: <span>🔗</span>, onClick: () => alert('Share') },
+                    ]}
+                  />
+                </div>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Popover</Heading>
+                <Text size="sm" color="secondary">Contextual popup anchored to element</Text>
+                <Spacer size="sm" />
+                <Button onClick={(e) => setPopoverAnchorEl(e.currentTarget)}>
+                  Open Popover
+                </Button>
+                <Popover
+                  open={Boolean(popoverAnchorEl)}
+                  anchorEl={popoverAnchorEl}
+                  onClose={() => setPopoverAnchorEl(null)}
+                >
+                  <div style={{ padding: '1rem' }}>
+                    <Text>This is popover content</Text>
+                  </div>
+                </Popover>
+                
+                <Spacer size="lg" />
+                
+                <Heading level={3}>Backdrop</Heading>
+                <Text size="sm" color="secondary">Overlay backdrop</Text>
+                <Spacer size="sm" />
+                <Button onClick={() => setBackdropOpen(true)}>
+                  Show Backdrop
+                </Button>
+                <Backdrop
+                  open={backdropOpen}
+                  onClick={() => setBackdropOpen(false)}
+                >
+                  <Card padding="lg">
+                    <Heading level={3}>Click outside to close</Heading>
+                  </Card>
+                </Backdrop>
+              </Card>
+            </GridItem>
+          </Grid>
         </Section>
 
         <Spacer size="xl" />
@@ -734,9 +928,62 @@ const ShowcaseContent: React.FC = () => {
                   currentStep={currentStep}
                   onStepClick={setCurrentStep}
                 />
+                
+                <Spacer size="lg" />
+                
+                <Heading level={3}>Menu (Adaptive - Phase 3)</Heading>
+                <Spacer size="sm" />
+                <Button onClick={(e) => setMenuAnchorEl(e.currentTarget)}>
+                  Open Menu
+                </Button>
+                <Menu
+                  anchorEl={menuAnchorEl}
+                  open={Boolean(menuAnchorEl)}
+                  onClose={() => setMenuAnchorEl(null)}
+                  items={[
+                    { label: 'Profile', value: 'profile' },
+                    { label: 'Settings', value: 'settings' },
+                    { label: 'Logout', value: 'logout' },
+                  ]}
+                />
               </Card>
             </GridItem>
           </Grid>
+        </Section>
+
+        <Spacer size="xl" />
+        
+        {/* Phase 4 Navigation Components */}
+        <Section>
+          <Heading level={2}>Phase 4 Navigation (Adaptive - NEW)</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          <Card padding="lg">
+            <Heading level={3}>Bottom Navigation</Heading>
+            <Text size="sm" color="secondary">Adaptive component for mobile navigation</Text>
+            <Spacer size="sm" />
+            <BottomNavigation
+              value={bottomNavValue}
+              onChange={setBottomNavValue}
+              actions={[
+                { label: 'Home', icon: '🏠', value: 0 },
+                { label: 'Search', icon: '🔍', value: 1 },
+                { label: 'Profile', icon: '👤', value: 2 },
+              ]}
+            />
+            
+            <Spacer size="lg" />
+            
+            <Heading level={3}>Toolbar</Heading>
+            <Text size="sm" color="secondary">Flexible toolbar container</Text>
+            <Spacer size="sm" />
+            <Toolbar>
+              <Button variant="text">Action 1</Button>
+              <Button variant="text">Action 2</Button>
+              <Button variant="contained">Primary Action</Button>
+            </Toolbar>
+          </Card>
         </Section>
 
         <Spacer size="xl" />
@@ -902,6 +1149,25 @@ const ShowcaseContent: React.FC = () => {
                 <SkeletonLoader variant="text" count={3} />
                 <Spacer size="sm" />
                 <SkeletonLoader variant="rectangular" width="100%" height="100px" />
+                
+                <Spacer size="lg" />
+                
+                <Heading level={3}>Skeleton (Adaptive - NEW)</Heading>
+                <Text size="sm" color="secondary">New adaptive component</Text>
+                <Spacer size="sm" />
+                <Skeleton variant="text" width={200} />
+                <Skeleton variant="text" width="80%" />
+                <Skeleton variant="text" width="60%" />
+                <Spacer size="sm" />
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <Skeleton variant="circular" width={40} height={40} />
+                  <div style={{ flex: 1 }}>
+                    <Skeleton variant="text" width="100%" />
+                    <Skeleton variant="text" width="60%" />
+                  </div>
+                </div>
+                <Spacer size="sm" />
+                <Skeleton variant="rectangular" width="100%" height={100} />
               </Card>
             </GridItem>
             
@@ -1141,6 +1407,206 @@ const ShowcaseContent: React.FC = () => {
                     { label: 'Components', onClick: () => console.log('Components') },
                     { label: 'Showcase' }
                   ]}
+                />
+              </Card>
+            </GridItem>
+          </Grid>
+        </Section>
+        
+        <Spacer size="xl" />
+
+        {/* New Adaptive Components Section */}
+        <Section>
+          <Heading level={2}>New Adaptive Components</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          <Grid columns={2} gap="lg">
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Autocomplete</Heading>
+                <Spacer size="sm" />
+                <Autocomplete
+                  options={[
+                    { value: 'apple', label: 'Apple' },
+                    { value: 'banana', label: 'Banana' },
+                    { value: 'cherry', label: 'Cherry' },
+                    { value: 'date', label: 'Date' },
+                    { value: 'elderberry', label: 'Elderberry' },
+                  ]}
+                  value={autocompleteValue}
+                  onChange={setAutocompleteValue}
+                  label="Select Fruit"
+                  placeholder="Type to search..."
+                />
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Accordion</Heading>
+                <Spacer size="sm" />
+                <Accordion
+                  items={[
+                    {
+                      id: 'panel1',
+                      title: 'Accordion Panel 1',
+                      content: 'This is the content of panel 1. It can contain any React content.',
+                    },
+                    {
+                      id: 'panel2',
+                      title: 'Accordion Panel 2',
+                      content: 'This is the content of panel 2. Click to expand/collapse.',
+                    },
+                    {
+                      id: 'panel3',
+                      title: 'Accordion Panel 3',
+                      content: 'This is the content of panel 3. Smooth animations when switching providers.',
+                    },
+                  ]}
+                  expanded={expandedAccordion}
+                  onChange={setExpandedAccordion}
+                />
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Drawer</Heading>
+                <Spacer size="sm" />
+                <Button onClick={() => setDrawerOpen(true)}>
+                  Open Drawer
+                </Button>
+                <Drawer
+                  open={drawerOpen}
+                  onClose={() => setDrawerOpen(false)}
+                  anchor="left"
+                  width={300}
+                >
+                  <div style={{ padding: '1rem' }}>
+                    <Heading level={3}>Drawer Content</Heading>
+                    <Spacer size="md" />
+                    <Text>This is a side drawer navigation panel.</Text>
+                    <Spacer size="md" />
+                    <Button onClick={() => setDrawerOpen(false)} fullWidth>
+                      Close Drawer
+                    </Button>
+                  </div>
+                </Drawer>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Menu</Heading>
+                <Spacer size="sm" />
+                <Button 
+                  onClick={(e) => setMenuAnchorEl(e.currentTarget)}
+                >
+                  Open Menu
+                </Button>
+                <Menu
+                  anchorEl={menuAnchorEl}
+                  open={Boolean(menuAnchorEl)}
+                  onClose={() => setMenuAnchorEl(null)}
+                  items={[
+                    { label: 'Profile', value: 'profile' },
+                    { label: 'Settings', value: 'settings' },
+                    { label: 'Logout', value: 'logout' },
+                  ]}
+                  onItemClick={(value) => {
+                    console.log('Selected:', value);
+                    setMenuAnchorEl(null);
+                  }}
+                />
+              </Card>
+            </GridItem>
+          </Grid>
+        </Section>
+        
+        {/* Latest Adaptive Components - Phase 3 */}
+        <Section>
+          <Heading level={2}>📦 Latest Adaptive Components (Phase 3)</Heading>
+          <Text>
+            Five more adaptive components with seamless provider switching.
+          </Text>
+          <Spacer size="lg" />
+          
+          <Grid columns={2} gap="lg">
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Dialog</Heading>
+                <Spacer size="sm" />
+                <Button onClick={() => setDialogOpen(true)}>Open Dialog</Button>
+                <Dialog
+                  open={dialogOpen}
+                  onClose={() => setDialogOpen(false)}
+                  title="Confirm Action"
+                  maxWidth="sm"
+                  actions={
+                    <>
+                      <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+                      <Button 
+                        variant="contained" 
+                        onClick={() => {
+                          console.log('Confirmed!');
+                          setDialogOpen(false);
+                        }}
+                      >
+                        Confirm
+                      </Button>
+                    </>
+                  }
+                >
+                  <Text>Are you sure you want to proceed with this action?</Text>
+                </Dialog>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>AppBar</Heading>
+                <Spacer size="sm" />
+                <AppBar position="static" color="primary">
+                  <div style={{ padding: '1rem', color: 'white' }}>
+                    <Heading level={3} style={{ margin: 0, color: 'inherit' }}>
+                      My Application
+                    </Heading>
+                  </div>
+                </AppBar>
+                <Spacer size="sm" />
+                <Text>App bar for navigation and branding</Text>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>List</Heading>
+                <Spacer size="sm" />
+                <List>
+                  <ListItem>First item in the list</ListItem>
+                  <ListItem>Second item in the list</ListItem>
+                  <ListItem>Third item in the list</ListItem>
+                  <ListItem>Fourth item in the list</ListItem>
+                </List>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Divider & Textarea</Heading>
+                <Spacer size="sm" />
+                <Text>Section 1</Text>
+                <Divider />
+                <Text>Section 2</Text>
+                <Divider />
+                <Spacer size="sm" />
+                <Textarea
+                  label="Comments"
+                  placeholder="Enter your comments..."
+                  rows={3}
+                  value={textareaValue}
+                  onChange={(e) => setTextareaValue(e.target.value)}
                 />
               </Card>
             </GridItem>
