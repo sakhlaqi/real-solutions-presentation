@@ -6,7 +6,7 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuthStore, useTenantStore } from '../../stores';
-import { Button } from '../base';
+import { Button } from '@sakhlaqi/ui';
 import './AdminLayout.css';
 
 export const AdminLayout: React.FC = () => {

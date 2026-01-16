@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore, useTenantStore } from '../stores';
-import { Button, Input, Card, Text } from '../components/base';
+import { Button, Input, Card, Heading, Text } from '@sakhlaqi/ui';
 import './LoginPage.css';
 
 export const LoginPage: React.FC = () => {
@@ -51,10 +51,10 @@ export const LoginPage: React.FC = () => {
     <div className="login-page">
       <Card className="login-card">
         <div className="login-header">
-          <Text variant="h2" className="login-title">
+          <Heading level={2} className="login-title">
             {config?.branding.name || 'Admin'} Login
-          </Text>
-          <Text variant="body" color="secondary" className="login-subtitle">
+          </Heading>
+          <Text size="md" color="secondary" className="login-subtitle">
             Sign in to access your dashboard
           </Text>
         </div>
@@ -62,7 +62,7 @@ export const LoginPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="login-form">
           {error && (
             <div className="login-error">
-              <Text variant="body" color="error">
+              <Text size="md" color="error">
                 {error}
               </Text>
             </div>

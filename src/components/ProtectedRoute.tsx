@@ -21,9 +21,8 @@ export interface ProtectedRouteProps {
   requiredRoles?: string[];
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
-  requiredRoles = [],
 }) => {
   const { isAuthenticated, isLoading, loadUser, logout } = useAuthStore();
   const location = useLocation();

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Card, Text } from '../base';
+import { Card, Text } from '@sakhlaqi/ui';
 import './FeatureGrid.css';
 
 export interface Feature {

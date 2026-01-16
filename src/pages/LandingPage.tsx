@@ -6,7 +6,6 @@
 import React, { useMemo } from 'react';
 import { useTenantStore } from '../stores';
 import { DynamicComponentRenderer } from '../components/DynamicComponentRenderer';
-import type { LandingPageSection } from '../types';
 
 export const LandingPage: React.FC = () => {
   const { config } = useTenantStore();

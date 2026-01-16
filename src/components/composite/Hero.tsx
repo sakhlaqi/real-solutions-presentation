@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Button } from '../base';
+import { Button } from '@sakhlaqi/ui';
 import './Hero.css';
 
 export interface HeroProps {

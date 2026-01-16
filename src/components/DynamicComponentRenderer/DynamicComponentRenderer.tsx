@@ -10,7 +10,7 @@
  * - Feature flag gating
  */
 
-import React, { Suspense, useMemo, memo, Component, ErrorInfo, ReactNode } from 'react';
+import React, { useMemo, memo, Component, type ErrorInfo, type ReactNode } from 'react';
 import { 
   componentRegistry, 
   componentPropSchemas, 

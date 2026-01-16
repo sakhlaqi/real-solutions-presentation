@@ -12,7 +12,7 @@
  * 3. Add prop schema to componentPropSchemas
  */
 
-import { ComponentType as ReactComponentType } from 'react';
+import { type ComponentType as ReactComponentType } from 'react';
 import { Hero, FeatureGrid, CTASection, ContentSection } from '../composite';
 
 /**

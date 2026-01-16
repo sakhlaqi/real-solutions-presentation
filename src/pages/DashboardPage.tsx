@@ -5,7 +5,7 @@
 
 import React, { useEffect } from 'react';
 import { useAuthStore, useTenantStore, useProjectStore } from '../stores';
-import { Card, Text } from '../components/base';
+import { Card, Heading, Text } from '@sakhlaqi/ui';
 import './DashboardPage.css';
 
 export const DashboardPage: React.FC = () => {
@@ -46,8 +46,8 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-header">
-        <Text variant="h1">Dashboard</Text>
-        <Text variant="body" color="secondary">
+        <Heading level={1}>Dashboard</Heading>
+        <Text size="md" color="secondary">
           Welcome back, {user?.email}!
         </Text>
       </div>
@@ -58,10 +58,10 @@ export const DashboardPage: React.FC = () => {
           <Card key={stat.label} className="stat-card">
             <div className="stat-icon">{stat.icon}</div>
             <div className="stat-content">
-              <Text variant="h2" className="stat-value">
+              <Heading level={2} className="stat-value">
                 {stat.value}
-              </Text>
-              <Text variant="body" color="secondary" className="stat-label">
+              </Heading>
+              <Text size="md" color="secondary" className="stat-label">
                 {stat.label}
               </Text>
             </div>
@@ -71,32 +71,32 @@ export const DashboardPage: React.FC = () => {
 
       {/* Tenant Info */}
       <Card className="tenant-info-card">
-        <Text variant="h3" className="section-title">
+        <Heading level={3} className="section-title">
           Tenant Information
-        </Text>
+        </Heading>
         <div className="tenant-info-grid">
           <div className="info-item">
-            <Text variant="body" color="secondary">
+            <Text size="md" color="secondary">
               Tenant Name
             </Text>
-            <Text variant="body" weight={600}>
+            <Text size="md" weight="semibold">
               {config?.branding.name || 'N/A'}
             </Text>
           </div>
           <div className="info-item">
-            <Text variant="body" color="secondary">
+            <Text size="md" color="secondary">
               Tagline
             </Text>
-            <Text variant="body" weight={600}>
+            <Text size="md" weight="semibold">
               {config?.branding.tagline || 'N/A'}
             </Text>
           </div>
           <div className="info-item">
-            <Text variant="body" color="secondary">
+            <Text size="md" color="secondary">
               Theme Mode
             </Text>
-            <Text variant="body" weight={600}>
-              {config?.theme.mode || 'light'}
+            <Text size="md" weight="semibold">
+              light
             </Text>
           </div>
         </div>
@@ -104,15 +104,15 @@ export const DashboardPage: React.FC = () => {
 
       {/* Recent Projects */}
       <Card className="recent-projects-card">
-        <Text variant="h3" className="section-title">
+        <Heading level={3} className="section-title">
           Recent Projects
-        </Text>
+        </Heading>
         {isLoading ? (
-          <Text variant="body" color="secondary">
+          <Text size="md" color="secondary">
             Loading projects...
           </Text>
         ) : projectsList.length === 0 ? (
-          <Text variant="body" color="secondary">
+          <Text size="md" color="secondary">
             No projects yet. Create your first project!
           </Text>
         ) : (
@@ -120,10 +120,10 @@ export const DashboardPage: React.FC = () => {
             {projectsList.slice(0, 5).map((project) => (
               <div key={project.id} className="project-item">
                 <div className="project-info">
-                  <Text variant="body" weight={600}>
+                  <Text size="md" weight="semibold">
                     {project.name}
                   </Text>
-                  <Text variant="small" color="secondary">
+                  <Text size="sm" color="secondary">
                     {project.description || 'No description'}
                   </Text>
                 </div>

@@ -10,6 +10,7 @@ A production-grade, multi-tenant front-end application built with React, TypeScr
 ✅ **Subdomain-based tenant resolution** - Automatic tenant detection  
 ✅ **Dynamic theming** - Per-tenant colors, fonts, and styles using CSS variables  
 ✅ **Configurable landing pages** - Component-based, data-driven pages  
+✅ **UI Component Library** - [@sakhlaqi/ui](../ui) - Production-ready React components  
 ✅ **JWT authentication** - Secure API communication with token refresh  
 ✅ **Token management** - Automatic refresh, session validation  
 ✅ **Error handling** - Centralized error utilities with user-friendly messages  
@@ -26,6 +27,7 @@ A production-grade, multi-tenant front-end application built with React, TypeScr
 - Node.js 18+ (or use nvm with `.nvmrc`)
 - npm or yarn
 - Access to the API server
+- GitHub token for `@sakhlaqi/ui` package (see [UI Library Setup](../ui/GITHUB_PACKAGES_SETUP.md))
 
 ### Installation
 
@@ -36,7 +38,10 @@ cd presentation
 # Use correct Node version
 nvm use
 
-# Install dependencies
+# Set GitHub token for @sakhlaqi/ui package
+export GITHUB_TOKEN=your_github_token_here
+
+# Install dependencies (includes @sakhlaqi/ui from GitHub Packages)
 npm install
 
 # Copy environment file
