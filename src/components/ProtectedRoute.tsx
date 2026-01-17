@@ -60,7 +60,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   if (isLoading || isCheckingSession) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', gap: '1rem' }}>
-        <Spinner size="lg" />
+        <Spinner size="large" />
         <Text size="md">Verifying session...</Text>
       </div>
     );

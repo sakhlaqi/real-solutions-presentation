@@ -5,7 +5,7 @@
 
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, UIProvider, ErrorBoundary, Spinner, Heading, Text, Button } from '@sakhlaqi/ui';
+import { ThemeProvider, UIProvider, ErrorBoundary, Spinner, Heading, Text } from '@sakhlaqi/ui';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { MainLayout, AdminLayout } from './components/layout';
 import { LandingPage } from './pages/LandingPage';

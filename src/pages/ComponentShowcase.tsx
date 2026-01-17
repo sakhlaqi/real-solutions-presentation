@@ -20,6 +20,7 @@ import {
   Accordion,
   Stack,
   Box,
+  Flex,
   Masonry,
   Divider,
   Spacer,
@@ -37,6 +38,7 @@ import {
   Select,
   Checkbox,
   Switch,
+  Toggle,
   RadioGroup,
   PasswordInput,
   EmailInput,
@@ -45,6 +47,7 @@ import {
   Rating,
   Slider,
   Autocomplete,
+  Form,
   // Data Display
   Badge,
   Avatar,
@@ -66,6 +69,8 @@ import {
   Skeleton,
   LinearProgress,
   EmptyState,
+  ErrorState,
+  SuccessState,
   Toast,
   Snackbar,
   // Navigation
@@ -76,13 +81,23 @@ import {
   AppBar,
   BottomNavigation,
   Menu,
+  Navbar,
+  DropdownMenu,
+  ContextMenu,
   // Overlay
   Modal,
   Dialog,
   Drawer,
   SlideOver,
+  BottomSheet,
   Popover,
   Backdrop,
+  Lightbox,
+  // Media
+  Image,
+  Carousel,
+  ImageGallery,
+  Thumbnail,
   // Utility
   useMediaQuery,
   Toolbar,
@@ -113,12 +128,13 @@ const ShowcaseContent: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
-  const [autocompleteValue, setAutocompleteValue] = useState<{ value: string; label: string } | null>(null);
+  const [autocompleteValue, setAutocompleteValue] = useState<{ value: string | number; label: string } | null>(null);
   const [expandedAccordion, setExpandedAccordion] = useState<string>('');
-  const [bottomNavValue, setBottomNavValue] = useState(0);
-  const [speedDialOpen, setSpeedDialOpen] = useState(false);
+  const [bottomNavValue, setBottomNavValue] = useState('0');
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLElement | null>(null);
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const isTablet = useMediaQuery('md');
 
   return (
@@ -554,6 +570,7 @@ const ShowcaseContent: React.FC = () => {
                   label="Disabled switch"
                   checked={false}
                   disabled
+                  onChange={() => {}}
                 />
                 
                 <Spacer size="lg" />
@@ -589,12 +606,9 @@ const ShowcaseContent: React.FC = () => {
                 <Heading level={3}>Badges</Heading>
                 <Spacer size="sm" />
                 <div className="showcase-row">
-                  <Badge>Default</Badge>
-                  <Badge variant="primary">Primary</Badge>
-                  <Badge variant="info">Info</Badge>
-                  <Badge variant="success">Success</Badge>
-                  <Badge variant="warning">Warning</Badge>
-                  <Badge variant="error">Error</Badge>
+                  <Badge><Text>Default</Text></Badge>
+                  <Badge variant="standard"><Text>Standard</Text></Badge>
+                  <Badge variant="dot"><Text>Dot</Text></Badge>
                 </div>
                 
                 <Spacer size="lg" />
@@ -602,10 +616,10 @@ const ShowcaseContent: React.FC = () => {
                 <Heading level={3}>Avatars</Heading>
                 <Spacer size="sm" />
                 <div className="showcase-row">
-                  <Avatar name="John Doe" size="sm" />
-                  <Avatar name="Jane Smith" size="md" />
-                  <Avatar name="Bob Johnson" size="lg" />
-                  <Avatar src="https://via.placeholder.com/100" alt="User" size="md" />
+                  <Avatar size="small">JD</Avatar>
+                  <Avatar size="medium">JS</Avatar>
+                  <Avatar size="large">BJ</Avatar>
+                  <Avatar src="https://via.placeholder.com/100" alt="User" size="medium" />
                 </div>
               </Card>
             </GridItem>
@@ -624,7 +638,7 @@ const ShowcaseContent: React.FC = () => {
                 
                 <Heading level={3}>Tooltip</Heading>
                 <Spacer size="sm" />
-                <Tooltip content="This is a helpful tooltip">
+                <Tooltip title="This is a helpful tooltip">
                   <Button>Hover me</Button>
                 </Tooltip>
               </Card>
@@ -664,10 +678,9 @@ const ShowcaseContent: React.FC = () => {
             <Heading level={3}>Spinners</Heading>
             <Spacer size="sm" />
             <div className="showcase-row">
-              <Spinner size="sm" />
-              <Spinner size="md" />
-              <Spinner size="lg" />
-              <Spinner size="xl" />
+              <Spinner size="small" />
+              <Spinner size="medium" />
+              <Spinner size="large" />
             </div>
             
             <Spacer size="xl" />
@@ -735,6 +748,50 @@ const ShowcaseContent: React.FC = () => {
               position="bottom-right"
               autoHideDuration={5000}
             />
+            
+            <Spacer size="xl" />
+            
+            <Heading level={3}>SkeletonLoader</Heading>
+            <Text size="sm" color="secondary">Adaptive skeleton loader component</Text>
+            <Spacer size="sm" />
+            <SkeletonLoader variant="text" width="80%" height={20} />
+            <Spacer size="xs" />
+            <SkeletonLoader variant="text" width="60%" height={20} />
+            <Spacer size="sm" />
+            <SkeletonLoader variant="rectangular" width="100%" height={100} />
+            <Spacer size="sm" />
+            <SkeletonLoader variant="circular" width={60} height={60} />
+            
+            <Spacer size="xl" />
+            
+            <Heading level={3}>EmptyState</Heading>
+            <Text size="sm" color="secondary">Empty state display component</Text>
+            <Spacer size="sm" />
+            <EmptyState
+              title="No items found"
+              description="There are no items to display at the moment."
+              action={<Button variant="contained">Add Item</Button>}
+            />
+            
+            <Spacer size="xl" />
+            
+            <Heading level={3}>ErrorState</Heading>
+            <Text size="sm" color="secondary">Error state display component</Text>
+            <Spacer size="sm" />
+            <ErrorState
+              title="Something went wrong"
+              message="An error occurred while loading the data."
+            />
+            
+            <Spacer size="xl" />
+            
+            <Heading level={3}>SuccessState</Heading>
+            <Text size="sm" color="secondary">Success state display component</Text>
+            <Spacer size="sm" />
+            <SuccessState
+              title="Success!"
+              message="Your action was completed successfully."
+            />
           </Card>
         </Section>
 
@@ -768,6 +825,35 @@ const ShowcaseContent: React.FC = () => {
             </Grid>
             
             <Spacer size="lg" />
+            
+            <Heading level={3}>Stack</Heading>
+            <Text size="sm" color="secondary">Vertical/horizontal stack layout</Text>
+            <Spacer size="sm" />
+            <Stack direction="column" spacing="sm">
+              <Card padding="sm" className="demo-card">Stack Item 1</Card>
+              <Card padding="sm" className="demo-card">Stack Item 2</Card>
+              <Card padding="sm" className="demo-card">Stack Item 3</Card>
+            </Stack>
+            
+            <Spacer size="lg" />
+            
+            <Heading level={3}>Flex</Heading>
+            <Text size="sm" color="secondary">Flexbox container component</Text>
+            <Spacer size="sm" />
+            <Flex justify="between" align="center" gap="md">
+              <Card padding="md" className="demo-card">Flex 1</Card>
+              <Card padding="md" className="demo-card">Flex 2</Card>
+              <Card padding="md" className="demo-card">Flex 3</Card>
+            </Flex>
+            
+            <Spacer size="lg" />
+            
+            <Heading level={3}>Box</Heading>
+            <Text size="sm" color="secondary">Generic container with padding/margin control</Text>
+            <Spacer size="sm" />
+            <Box padding="lg" className="demo-card">
+              <Text>Box component with padding</Text>
+            </Box>
           </Card>
         </Section>
 
@@ -791,8 +877,6 @@ const ShowcaseContent: React.FC = () => {
                   value={ratingValue}
                   onChange={setRatingValue}
                   max={5}
-                  showValue
-                  label="Rate this product"
                   precision={0.5}
                 />
                 <Spacer size="md" />
@@ -815,8 +899,6 @@ const ShowcaseContent: React.FC = () => {
                   min={0}
                   max={100}
                   step={1}
-                  showValue
-                  label="Volume"
                 />
               </Card>
             </GridItem>
@@ -908,15 +990,29 @@ const ShowcaseContent: React.FC = () => {
             
             <Heading level={3}>Toggle Button</Heading>
             <Spacer size="sm" />
-            <ToggleButton
-              value={toggleButtonValue}
-              onChange={(val) => setToggleButtonValue(Array.isArray(val) ? val[0] || '' : val)}
-              options={[
-                { value: 'left', label: 'Left' },
-                { value: 'center', label: 'Center' },
-                { value: 'right', label: 'Right' },
-              ]}
-            />
+            <div className="showcase-row">
+              <ToggleButton
+                value="left"
+                selected={toggleButtonValue === 'left'}
+                onChange={() => setToggleButtonValue('left')}
+              >
+                Left
+              </ToggleButton>
+              <ToggleButton
+                value="center"
+                selected={toggleButtonValue === 'center'}
+                onChange={() => setToggleButtonValue('center')}
+              >
+                Center
+              </ToggleButton>
+              <ToggleButton
+                value="right"
+                selected={toggleButtonValue === 'right'}
+                onChange={() => setToggleButtonValue('right')}
+              >
+                Right
+              </ToggleButton>
+            </div>
             
             <Spacer size="lg" />
             
@@ -1053,9 +1149,9 @@ const ShowcaseContent: React.FC = () => {
                 <Heading level={3}>Pagination</Heading>
                 <Spacer size="sm" />
                 <Pagination
-                  currentPage={currentPage}
-                  totalPages={10}
-                  onPageChange={setCurrentPage}
+                  page={currentPage}
+                  count={10}
+                  onChange={(page) => setCurrentPage(page)}
                 />
                 
                 <Spacer size="lg" />
@@ -1064,11 +1160,11 @@ const ShowcaseContent: React.FC = () => {
                 <Spacer size="sm" />
                 <Stepper
                   steps={[
-                    { id: 'account', label: 'Account' },
-                    { id: 'profile', label: 'Profile' },
-                    { id: 'review', label: 'Review' },
+                    { label: 'Account' },
+                    { label: 'Profile' },
+                    { label: 'Review' },
                   ]}
-                  currentStep={currentStep}
+                  activeStep={currentStep}
                   onStepClick={setCurrentStep}
                 />
                 
@@ -1088,6 +1184,10 @@ const ShowcaseContent: React.FC = () => {
                     { label: 'Settings', value: 'settings' },
                     { label: 'Logout', value: 'logout' },
                   ]}
+                  onItemClick={(value) => {
+                    console.log('Selected:', value);
+                    setMenuAnchorEl(null);
+                  }}
                 />
               </Card>
             </GridItem>
@@ -1110,9 +1210,9 @@ const ShowcaseContent: React.FC = () => {
               value={bottomNavValue}
               onChange={setBottomNavValue}
               actions={[
-                { label: 'Home', icon: '🏠', value: 0 },
-                { label: 'Search', icon: '🔍', value: 1 },
-                { label: 'Profile', icon: '👤', value: 2 },
+                { label: 'Home', value: '0' },
+                { label: 'Search', value: '1' },
+                { label: 'Profile', value: '2' },
               ]}
             />
             
@@ -1197,9 +1297,9 @@ const ShowcaseContent: React.FC = () => {
                 <Heading level={3}>Chips & Tags</Heading>
                 <Spacer size="sm" />
                 <div className="showcase-row">
-                  <Chip variant="primary" onDelete={() => {}}>Primary</Chip>
-                  <Chip variant="success" onDelete={() => {}}>Success</Chip>
-                  <Chip variant="warning">Warning</Chip>
+                  <Chip label="Filled" variant="filled" onDelete={() => {}} />
+                  <Chip label="Outlined" variant="outlined" onDelete={() => {}} />
+                  <Chip label="Default" variant="filled" />
                 </div>
                 <Spacer size="sm" />
                 <div className="showcase-row">
@@ -1383,14 +1483,14 @@ const ShowcaseContent: React.FC = () => {
               open={dialogOpen}
               onClose={() => setDialogOpen(false)}
               title="Dialog Title"
-              footer={
+              actions={
                 <>
                   <Button variant="text" onClick={() => setDialogOpen(false)}>Cancel</Button>
                   <Button onClick={() => setDialogOpen(false)}>Confirm</Button>
                 </>
               }
             >
-              <Text>This is a dialog with a footer section.</Text>
+              <Text>This is a dialog with action buttons.</Text>
             </Dialog>
             
             <SlideOver
@@ -1401,6 +1501,39 @@ const ShowcaseContent: React.FC = () => {
             >
               <Text>This is a slide-over panel that appears from the side.</Text>
             </SlideOver>
+            
+            <Spacer size="lg" />
+            
+            <Heading level={3}>BottomSheet</Heading>
+            <Text size="sm" color="secondary">Mobile-style bottom drawer</Text>
+            <Spacer size="sm" />
+            <Button onClick={() => setBottomSheetOpen(true)}>Open BottomSheet</Button>
+            <BottomSheet
+              isOpen={bottomSheetOpen}
+              onClose={() => setBottomSheetOpen(false)}
+              title="Bottom Sheet"
+            >
+              <Text>This is a bottom sheet that slides up from the bottom of the screen.</Text>
+              <Spacer size="md" />
+              <Button onClick={() => setBottomSheetOpen(false)}>Close</Button>
+            </BottomSheet>
+            
+            <Spacer size="lg" />
+            
+            <Heading level={3}>Lightbox</Heading>
+            <Text size="sm" color="secondary">Image lightbox viewer</Text>
+            <Spacer size="sm" />
+            <Button onClick={() => setLightboxOpen(true)}>Open Lightbox</Button>
+            <Lightbox
+              isOpen={lightboxOpen}
+              onClose={() => setLightboxOpen(false)}
+              images={[
+                { src: 'https://via.placeholder.com/800x600', alt: 'Image 1' },
+                { src: 'https://via.placeholder.com/800x600/FF0000', alt: 'Image 2' },
+                { src: 'https://via.placeholder.com/800x600/00FF00', alt: 'Image 3' }
+              ]}
+              currentIndex={0}
+            />
           </Card>
         </Section>
 
@@ -1607,8 +1740,8 @@ const ShowcaseContent: React.FC = () => {
                       content: 'This is the content of panel 3. Smooth animations when switching providers.',
                     },
                   ]}
-                  expanded={expandedAccordion}
-                  onChange={setExpandedAccordion}
+                  defaultExpanded={expandedAccordion}
+                  onChange={(ids) => setExpandedAccordion(Array.isArray(ids) ? ids[0] || '' : ids)}
                 />
               </Card>
             </GridItem>
@@ -1712,7 +1845,7 @@ const ShowcaseContent: React.FC = () => {
                 <Spacer size="sm" />
                 <AppBar position="static" color="primary">
                   <div style={{ padding: '1rem', color: 'white' }}>
-                    <Heading level={3} style={{ margin: 0, color: 'inherit' }}>
+                    <Heading level={3}>
                       My Application
                     </Heading>
                   </div>
@@ -1751,6 +1884,193 @@ const ShowcaseContent: React.FC = () => {
                   value={textareaValue}
                   onChange={(e) => setTextareaValue(e.target.value)}
                 />
+              </Card>
+            </GridItem>
+          </Grid>
+        </Section>
+        
+        <Spacer size="xl" />
+        
+        {/* Media Components */}
+        <Section>
+          <Heading level={2}>Media Components</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          <Grid columns={2} gap="lg">
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Image</Heading>
+                <Spacer size="sm" />
+                <Image
+                  src="https://via.placeholder.com/400x300"
+                  alt="Placeholder image"
+                  width={400}
+                  height={300}
+                />
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Thumbnail</Heading>
+                <Spacer size="sm" />
+                <Flex gap="sm">
+                  <Thumbnail
+                    src="https://via.placeholder.com/100"
+                    alt="Thumbnail 1"
+                    size="sm"
+                  />
+                  <Thumbnail
+                    src="https://via.placeholder.com/100"
+                    alt="Thumbnail 2"
+                    size="md"
+                  />
+                  <Thumbnail
+                    src="https://via.placeholder.com/100"
+                    alt="Thumbnail 3"
+                    size="lg"
+                  />
+                </Flex>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Carousel</Heading>
+                <Spacer size="sm" />
+                <Carousel autoPlay={false}>
+                  <Image src="https://via.placeholder.com/400x200" alt="Slide 1" />
+                  <Image src="https://via.placeholder.com/400x200/FF0000" alt="Slide 2" />
+                  <Image src="https://via.placeholder.com/400x200/00FF00" alt="Slide 3" />
+                </Carousel>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>ImageGallery</Heading>
+                <Spacer size="sm" />
+                <ImageGallery
+                  images={[
+                    { id: '1', src: 'https://via.placeholder.com/200', alt: 'Gallery 1' },
+                    { id: '2', src: 'https://via.placeholder.com/200/FF0000', alt: 'Gallery 2' },
+                    { id: '3', src: 'https://via.placeholder.com/200/00FF00', alt: 'Gallery 3' },
+                    { id: '4', src: 'https://via.placeholder.com/200/0000FF', alt: 'Gallery 4' }
+                  ]}
+                  columns={2}
+                />
+              </Card>
+            </GridItem>
+          </Grid>
+        </Section>
+        
+        <Spacer size="xl" />
+        
+        {/* Navigation Components */}
+        <Section>
+          <Heading level={2}>Advanced Navigation</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          <Grid columns={2} gap="lg">
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Navbar</Heading>
+                <Spacer size="sm" />
+                <Navbar>
+                  <Button variant="text">Home</Button>
+                  <Button variant="text">About</Button>
+                  <Button variant="text">Contact</Button>
+                </Navbar>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>DropdownMenu</Heading>
+                <Spacer size="sm" />
+                <DropdownMenu
+                  trigger={<Button>Open Menu</Button>}
+                  items={[
+                    { id: 'profile', label: 'Profile', onClick: () => alert('Profile') },
+                    { id: 'settings', label: 'Settings', onClick: () => alert('Settings') },
+                    { id: 'logout', label: 'Logout', onClick: () => alert('Logout') }
+                  ]}
+                />
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>ContextMenu</Heading>
+                <Spacer size="sm" />
+                <ContextMenu
+                  items={[
+                    { id: 'copy', label: 'Copy', onClick: () => alert('Copy') },
+                    { id: 'paste', label: 'Paste', onClick: () => alert('Paste') },
+                    { id: 'delete', label: 'Delete', onClick: () => alert('Delete') }
+                  ]}
+                >
+                  <Box padding="lg" className="demo-card">
+                    <Text>Right-click here for context menu</Text>
+                  </Box>
+                </ContextMenu>
+              </Card>
+            </GridItem>
+          </Grid>
+        </Section>
+        
+        <Spacer size="xl" />
+        
+        {/* Form Components */}
+        <Section>
+          <Heading level={2}>Additional Form Components</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          <Grid columns={2} gap="lg">
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Form</Heading>
+                <Spacer size="sm" />
+                <Form onSubmit={(e) => { e.preventDefault(); alert('Form submitted!'); }}>
+                  <Input
+                    label="Name"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                  <Spacer size="sm" />
+                  <EmailInput
+                    label="Email"
+                    value=""
+                    onChange={() => {}}
+                  />
+                  <Spacer size="md" />
+                  <Button type="submit" variant="contained">Submit</Button>
+                </Form>
+              </Card>
+            </GridItem>
+            
+            <GridItem>
+              <Card padding="lg">
+                <Heading level={3}>Toggle</Heading>
+                <Spacer size="sm" />
+                <Toggle
+                  label="Enable notifications"
+                  checked={toggleValue}
+                  onChange={(checked) => setToggleValue(checked)}
+                />
+                <Spacer size="sm" />
+                <Toggle
+                  label="Dark mode"
+                  checked={false}
+                  onChange={() => {}}
+                />
+                <Spacer size="sm" />
+                <Text size="sm" color="secondary">
+                  Toggle is {toggleValue ? 'ON' : 'OFF'}
+                </Text>
               </Card>
             </GridItem>
           </Grid>
