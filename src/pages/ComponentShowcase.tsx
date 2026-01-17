@@ -48,6 +48,10 @@ import {
   Slider,
   Autocomplete,
   Form,
+  Field,
+  InputGroup,
+  NativeSelect,
+  Kbd,
   // Data Display
   Badge,
   Avatar,
@@ -55,10 +59,13 @@ import {
   ListItem,
   Tooltip,
   Table,
+  DataTable,
   Chip,
   Tag,
   TreeView,
   Timeline,
+  Item,
+  Empty,
   // Feedback
   Alert,
   Spinner,
@@ -129,7 +136,6 @@ const ShowcaseContent: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
   const [autocompleteValue, setAutocompleteValue] = useState<{ value: string | number; label: string } | null>(null);
-  const [expandedAccordion, setExpandedAccordion] = useState<string>('');
   const [bottomNavValue, setBottomNavValue] = useState('0');
   const [popoverAnchorEl, setPopoverAnchorEl] = useState<HTMLElement | null>(null);
   const [backdropOpen, setBackdropOpen] = useState(false);
@@ -154,7 +160,7 @@ const ShowcaseContent: React.FC = () => {
               <div>
                 <Text weight="semibold">UI Provider</Text>
                 <Text size="sm" color="secondary">
-                  Switch between Internal, Material-UI, and Radix UI components
+                  Switch between Internal, Material-UI, Radix UI, and Shadcn UI components
                 </Text>
               </div>
               <ButtonGroup>
@@ -177,6 +183,13 @@ const ShowcaseContent: React.FC = () => {
                 >
                   Radix UI
                 </Button>
+                <Button 
+                  variant={provider === 'shadcn' ? 'contained' : 'outlined'}
+                  onClick={() => setProvider('shadcn')}
+                  color="primary"
+                >
+                  Shadcn UI
+                </Button>
               </ButtonGroup>
             </div>
             <Spacer size="sm" />
@@ -185,9 +198,11 @@ const ShowcaseContent: React.FC = () => {
                 {provider === 'mui' && 'Material-UI (MUI)'}
                 {provider === 'internal' && 'Internal Components'}
                 {provider === 'radix' && 'Radix UI'}
+                {provider === 'shadcn' && 'Shadcn UI'}
               </strong>
               {provider === 'mui' && ' - Adaptive components now use Material-UI implementation'}
               {provider === 'radix' && ' - Adaptive components now use Radix UI implementation (NEW in v3.0.0)'}
+              {provider === 'shadcn' && ' - Adaptive components now use Shadcn UI implementation (NEW in v3.0.0)'}
             </Alert>
             
             <Spacer size="md" />
@@ -1740,8 +1755,6 @@ const ShowcaseContent: React.FC = () => {
                       content: 'This is the content of panel 3. Smooth animations when switching providers.',
                     },
                   ]}
-                  expanded={expandedAccordion}
-                  onChange={(id) => setExpandedAccordion(expandedAccordion === id ? '' : id)}
                 />
               </Card>
             </GridItem>
@@ -2074,6 +2087,249 @@ const ShowcaseContent: React.FC = () => {
               </Card>
             </GridItem>
           </Grid>
+        </Section>
+        
+        <Spacer size="xl" />
+
+        {/* New Shadcn Components Section */}
+        <Section>
+          <Heading level={2}>New Shadcn Components</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          {/* Field Component */}
+          <Card padding="lg">
+            <Heading level={3}>Field (Form Field Wrapper)</Heading>
+            <Text size="sm" color="secondary">
+              A comprehensive form field component with label, description, error message, and various layouts.
+            </Text>
+            <Spacer size="md" />
+            
+            <Field orientation="vertical">
+              <Text weight="semibold">Email Address</Text>
+              <Text size="sm" color="secondary">Enter your email address</Text>
+              <Input 
+                type="email" 
+                placeholder="you@example.com"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+              <Text size="xs" color="error">This field is required</Text>
+            </Field>
+            
+            <Spacer size="lg" />
+            
+            <Field orientation="horizontal">
+              <Text weight="semibold">Newsletter</Text>
+              <Checkbox 
+                checked={checkboxValue}
+                onChange={(e) => setCheckboxValue(e.target.checked)}
+              />
+            </Field>
+          </Card>
+          
+          <Spacer size="lg" />
+          
+          {/* InputGroup Component */}
+          <Card padding="lg">
+            <Heading level={3}>InputGroup (Input with Addons)</Heading>
+            <Text size="sm" color="secondary">
+              Input component with prefix/suffix addons for enhanced functionality.
+            </Text>
+            <Spacer size="md" />
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div>
+                <Text size="sm" weight="medium">URL Input</Text>
+                <Spacer size="xs" />
+                <InputGroup>
+                  <Text>https://</Text>
+                  <Input placeholder="example.com" />
+                </InputGroup>
+              </div>
+              
+              <div>
+                <Text size="sm" weight="medium">Price Input</Text>
+                <Spacer size="xs" />
+                <InputGroup>
+                  <Text>$</Text>
+                  <Input type="number" placeholder="0.00" />
+                  <Text>USD</Text>
+                </InputGroup>
+              </div>
+              
+              <div>
+                <Text size="sm" weight="medium">Search Input</Text>
+                <Spacer size="xs" />
+                <InputGroup>
+                  <Input placeholder="Search..." />
+                  <Button size="small">Search</Button>
+                </InputGroup>
+              </div>
+            </div>
+          </Card>
+          
+          <Spacer size="lg" />
+          
+          {/* Item Component */}
+          <Card padding="lg">
+            <Heading level={3}>Item (Versatile Content Display)</Heading>
+            <Text size="sm" color="secondary">
+              Flexible component for displaying content with media, title, description, and actions.
+            </Text>
+            <Spacer size="md" />
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <Item variant="default">
+                <Avatar src="/avatar.jpg" alt="User" size="medium" />
+                <div>
+                  <Text weight="semibold">John Doe</Text>
+                  <Text size="sm" color="secondary">Software Engineer</Text>
+                </div>
+                <Button size="small" variant="outlined">Follow</Button>
+              </Item>
+              
+              <Item variant="outline">
+                <Badge variant="standard"><span>New</span></Badge>
+                <div>
+                  <Text weight="semibold">Feature Update</Text>
+                  <Text size="sm" color="secondary">Check out our latest features and improvements</Text>
+                </div>
+              </Item>
+            </div>
+          </Card>
+          
+          <Spacer size="lg" />
+          
+          {/* Kbd Component */}
+          <Card padding="lg">
+            <Heading level={3}>Kbd (Keyboard Shortcuts)</Heading>
+            <Text size="sm" color="secondary">
+              Display keyboard shortcuts in a styled format.
+            </Text>
+            <Spacer size="md" />
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div>
+                <Text>Copy: <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd></Text>
+              </div>
+              <div>
+                <Text>Paste: <Kbd>Ctrl</Kbd> + <Kbd>V</Kbd></Text>
+              </div>
+              <div>
+                <Text>Save: <Kbd>Ctrl</Kbd> + <Kbd>S</Kbd></Text>
+              </div>
+              <div>
+                <Text>Search: <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> or <Kbd>⌘</Kbd> + <Kbd>K</Kbd></Text>
+              </div>
+            </div>
+          </Card>
+          
+          <Spacer size="lg" />
+          
+          {/* NativeSelect Component */}
+          <Card padding="lg">
+            <Heading level={3}>NativeSelect (Native HTML Select)</Heading>
+            <Text size="sm" color="secondary">
+              Native HTML select element with consistent styling.
+            </Text>
+            <Spacer size="md" />
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px' }}>
+              <div>
+                <Text size="sm" weight="medium">Country</Text>
+                <Spacer size="xs" />
+                <NativeSelect>
+                  <option value="">Select a country</option>
+                  <option value="us">United States</option>
+                  <option value="uk">United Kingdom</option>
+                  <option value="ca">Canada</option>
+                  <option value="au">Australia</option>
+                </NativeSelect>
+              </div>
+              
+              <div>
+                <Text size="sm" weight="medium">Time Zone</Text>
+                <Spacer size="xs" />
+                <NativeSelect>
+                  <optgroup label="US Time Zones">
+                    <option value="est">Eastern Time</option>
+                    <option value="cst">Central Time</option>
+                    <option value="mst">Mountain Time</option>
+                    <option value="pst">Pacific Time</option>
+                  </optgroup>
+                  <optgroup label="International">
+                    <option value="utc">UTC</option>
+                    <option value="gmt">GMT</option>
+                  </optgroup>
+                </NativeSelect>
+              </div>
+            </div>
+          </Card>
+          
+          <Spacer size="lg" />
+          
+          {/* Empty Component */}
+          <Card padding="lg">
+            <Heading level={3}>Empty (Empty State)</Heading>
+            <Text size="sm" color="secondary">
+              Display empty states with customizable content, media, and actions.
+            </Text>
+            <Spacer size="md" />
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <Empty variant="default">
+                <div style={{ textAlign: 'center' }}>
+                  <Text size="lg" weight="semibold">No results found</Text>
+                  <Spacer size="xs" />
+                  <Text size="sm" color="secondary">
+                    Try adjusting your search or filter to find what you're looking for.
+                  </Text>
+                  <Spacer size="md" />
+                  <Button variant="outlined">Clear filters</Button>
+                </div>
+              </Empty>
+              
+              <Empty variant="outline">
+                <div style={{ textAlign: 'center' }}>
+                  <Text size="lg" weight="semibold">No items yet</Text>
+                  <Spacer size="xs" />
+                  <Text size="sm" color="secondary">
+                    Get started by creating your first item.
+                  </Text>
+                  <Spacer size="md" />
+                  <Button>Create Item</Button>
+                </div>
+              </Empty>
+            </div>
+          </Card>
+          
+          <Spacer size="lg" />
+          
+          {/* DataTable Component */}
+          <Card padding="lg">
+            <Heading level={3}>DataTable (Advanced Data Table)</Heading>
+            <Text size="sm" color="secondary">
+              Feature-rich data table with sorting, filtering, pagination, and column visibility.
+            </Text>
+            <Spacer size="md" />
+            
+            <DataTable
+              columns={[
+                { id: 'name', header: 'Name', accessorKey: 'name' },
+                { id: 'email', header: 'Email', accessorKey: 'email' },
+                { id: 'role', header: 'Role', accessorKey: 'role' },
+                { id: 'status', header: 'Status', accessorKey: 'status' },
+              ]}
+              data={[
+                { name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active' },
+                { name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active' },
+                { name: 'Bob Johnson', email: 'bob@example.com', role: 'User', status: 'Inactive' },
+                { name: 'Alice Williams', email: 'alice@example.com', role: 'Manager', status: 'Active' },
+                { name: 'Charlie Brown', email: 'charlie@example.com', role: 'User', status: 'Active' },
+              ]}
+            />
+          </Card>
         </Section>
         
         <Spacer size="xl" />
