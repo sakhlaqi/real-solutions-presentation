@@ -1740,8 +1740,8 @@ const ShowcaseContent: React.FC = () => {
                       content: 'This is the content of panel 3. Smooth animations when switching providers.',
                     },
                   ]}
-                  defaultExpanded={expandedAccordion}
-                  onChange={(ids) => setExpandedAccordion(Array.isArray(ids) ? ids[0] || '' : ids)}
+                  expanded={expandedAccordion}
+                  onChange={(id) => setExpandedAccordion(expandedAccordion === id ? '' : id)}
                 />
               </Card>
             </GridItem>
