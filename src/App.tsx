@@ -40,7 +40,7 @@ const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <UIProvider defaultProvider="mui">
+      <UIProvider defaultProvider="mui" defaultTheme={{ mode: 'light' }}>
         <ThemeProvider>
           <BrowserRouter>
           <Suspense fallback={

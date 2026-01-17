@@ -10,6 +10,7 @@ import {
   // Typography
   Heading,
   Text,
+  Typography,
   // Layout
   Container,
   Grid,
@@ -268,6 +269,136 @@ const ShowcaseContent: React.FC = () => {
             <Text weight="medium">Medium weight</Text>
             <Text weight="semibold">Semibold weight</Text>
             <Text weight="bold">Bold weight</Text>
+          </Card>
+        </Section>
+
+        <Spacer size="xl" />
+
+        {/* Typography Adapter Section */}
+        <Section>
+          <Heading level={2}>Typography Adapter (Multi-Provider)</Heading>
+          <Divider />
+          <Spacer size="md" />
+          
+          <Card padding="lg">
+            <Heading level={3}>Typography Variants</Heading>
+            <Text size="sm" color="secondary">
+              The Typography adapter automatically switches between internal, MUI, and Radix implementations
+            </Text>
+            <Spacer size="md" />
+            
+            <Typography variant="h1">Heading 1 Variant</Typography>
+            <Typography variant="h2">Heading 2 Variant</Typography>
+            <Typography variant="h3">Heading 3 Variant</Typography>
+            <Typography variant="h4">Heading 4 Variant</Typography>
+            <Typography variant="h5">Heading 5 Variant</Typography>
+            <Typography variant="h6">Heading 6 Variant</Typography>
+            
+            <Spacer size="lg" />
+            <Heading level={3}>Body Text Variants</Heading>
+            <Spacer size="sm" />
+            
+            <Typography variant="body1">
+              Body1: This is the default body text variant. It's used for most paragraph content
+              and provides good readability for extended reading.
+            </Typography>
+            <Spacer size="sm" />
+            
+            <Typography variant="body2">
+              Body2: This is a slightly smaller body text variant. It's useful for secondary
+              content or when you need to fit more text in a smaller space.
+            </Typography>
+            <Spacer size="sm" />
+            
+            <Typography variant="caption">
+              Caption: This variant is used for captions, footnotes, or any small supplementary text.
+            </Typography>
+            <Spacer size="sm" />
+            
+            <Typography variant="button">BUTTON TEXT VARIANT</Typography>
+            <Spacer size="sm" />
+            
+            <Typography variant="overline">OVERLINE TEXT VARIANT</Typography>
+            
+            <Spacer size="lg" />
+            <Heading level={3}>Color Options</Heading>
+            <Spacer size="sm" />
+            
+            <Typography color="primary">Primary Color Typography</Typography>
+            <Typography color="secondary">Secondary Color Typography</Typography>
+            <Typography color="error">Error Color Typography</Typography>
+            <Typography color="warning">Warning Color Typography</Typography>
+            <Typography color="info">Info Color Typography</Typography>
+            <Typography color="success">Success Color Typography</Typography>
+            <Typography color="textPrimary">Text Primary Color</Typography>
+            <Typography color="textSecondary">Text Secondary Color</Typography>
+            
+            <Spacer size="lg" />
+            <Heading level={3}>Text Alignment</Heading>
+            <Spacer size="sm" />
+            
+            <Typography align="left">Left aligned text (default)</Typography>
+            <Typography align="center">Center aligned text</Typography>
+            <Typography align="right">Right aligned text</Typography>
+            <Typography align="justify">
+              Justified text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+            </Typography>
+            
+            <Spacer size="lg" />
+            <Heading level={3}>Utility Props</Heading>
+            <Spacer size="sm" />
+            
+            <Typography gutterBottom>
+              This paragraph has gutterBottom prop for spacing
+            </Typography>
+            <Typography gutterBottom>
+              This is another paragraph with gutterBottom
+            </Typography>
+            <Typography>
+              This is a paragraph without gutterBottom (no extra spacing below)
+            </Typography>
+            
+            <Spacer size="md" />
+            <div style={{ width: '300px', border: '1px solid #ddd', padding: '8px' }}>
+              <Typography noWrap>
+                This is a very long text that will be truncated with ellipsis when it overflows the container width instead of wrapping to a new line
+              </Typography>
+            </div>
+            
+            <Spacer size="lg" />
+            <Heading level={3}>Practical Example</Heading>
+            <Spacer size="sm" />
+            
+            <article style={{ maxWidth: '600px' }}>
+              <Typography variant="h2" gutterBottom>
+                The Power of Typography
+              </Typography>
+              
+              <Typography variant="body2" color="textSecondary" gutterBottom>
+                Published on {new Date().toLocaleDateString()} • 5 min read
+              </Typography>
+              
+              <Typography variant="body1" gutterBottom>
+                Typography is one of the most important aspects of design. It not only conveys 
+                information but also sets the tone and mood of your content. Good typography 
+                enhances readability and user experience.
+              </Typography>
+              
+              <Typography variant="h3" gutterBottom>
+                Why Typography Matters
+              </Typography>
+              
+              <Typography variant="body1" gutterBottom>
+                Proper typography ensures that your message is communicated effectively. 
+                It guides the reader's eye, establishes hierarchy, and creates visual interest.
+              </Typography>
+              
+              <Typography variant="caption" color="textSecondary">
+                * Typography best practices should be followed throughout your application
+              </Typography>
+            </article>
           </Card>
         </Section>
 
