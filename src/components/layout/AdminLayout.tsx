@@ -65,9 +65,6 @@ export const AdminLayout: React.FC = () => {
         ⚙️ Settings
       </Link>
       <div className="admin-sidebar-divider" />
-      <Link to="/components" className="admin-sidebar-link">
-        🧩 Component Library
-      </Link>
       <Link to="/" className="admin-sidebar-link">
         🌐 View Public Site
       </Link>

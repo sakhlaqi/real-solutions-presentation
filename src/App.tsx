@@ -5,13 +5,12 @@
 
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, UIProvider, ErrorBoundary, Spinner, Heading, Text } from '@sakhlaqi/ui';
+import { UIProvider, ErrorBoundary, Spinner, Heading, Text } from '@sakhlaqi/ui';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { MainLayout, AdminLayout } from './components/layout';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { ComponentShowcase } from './pages/ComponentShowcase';
 import { useAppBootstrap } from './hooks/useAppBootstrap';
 import './styles/global.css';
 
@@ -40,9 +39,8 @@ const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <UIProvider defaultProvider="mui" defaultTheme={{ mode: 'light' }}>
-        <ThemeProvider>
-          <BrowserRouter>
+      <UIProvider defaultProvider="mui">
+        <BrowserRouter>
           <Suspense fallback={
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
               <Spinner size="large" />
@@ -52,7 +50,6 @@ const App: React.FC = () => {
               {/* Public routes with MainLayout */}
               <Route path="/" element={<MainLayout />}>
                 <Route index element={<LandingPage />} />
-                <Route path="components" element={<ComponentShowcase />} />
               </Route>
 
               {/* Login page (standalone) */}
@@ -99,7 +96,6 @@ const App: React.FC = () => {
             </Routes>
           </Suspense>
         </BrowserRouter>
-      </ThemeProvider>
       </UIProvider>
     </ErrorBoundary>
   );

@@ -32,9 +32,6 @@ export const Header: React.FC = () => {
         <nav className="header-nav">
           {isAuthenticated ? (
             <>
-              <Link to="/components" className="header-link">
-                Components
-              </Link>
               <Link to="/admin" className="header-link">
                 Admin Dashboard
               </Link>
@@ -45,9 +42,6 @@ export const Header: React.FC = () => {
             </>
           ) : (
             <>
-              <Link to="/components" className="header-link">
-                Components
-              </Link>
               <Link to="/login">
                 <Button variant="text">
                   Admin Login
