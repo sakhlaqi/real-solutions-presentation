@@ -5,12 +5,11 @@
 
 import React, { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { UIProvider, ErrorBoundary, Spinner, Heading, Text } from '@sakhlaqi/ui';
+import { ErrorBoundary, Spinner } from '@sakhlaqi/ui';
+import { UiProviderBridge } from './app';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { MainLayout, AdminLayout } from './components/layout';
-import { LandingPage } from './pages/LandingPage';
-import { LoginPage } from './pages/LoginPage';
-import { DashboardPage } from './pages/DashboardPage';
+import { JsonPageRoute } from './components/JsonPageRoute';
 import { useAppBootstrap } from './hooks/useAppBootstrap';
 import './styles/global.css';
 
@@ -39,7 +38,7 @@ const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <UIProvider defaultProvider="mui">
+      <UiProviderBridge provider="mui">
         <BrowserRouter>
           <Suspense fallback={
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
@@ -49,11 +48,11 @@ const App: React.FC = () => {
             <Routes>
               {/* Public routes with MainLayout */}
               <Route path="/" element={<MainLayout />}>
-                <Route index element={<LandingPage />} />
+                <Route index element={<JsonPageRoute pagePath="/" pageTitle="Home" />} />
               </Route>
 
-              {/* Login page (standalone) */}
-              <Route path="/login" element={<LoginPage />} />
+              {/* Login page (JSON-driven) */}
+              <Route path="/login" element={<JsonPageRoute pagePath="/login" pageTitle="Login" />} />
               
               {/* Protected admin routes with AdminLayout */}
               <Route
@@ -64,31 +63,16 @@ const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               >
-                <Route index element={<DashboardPage />} />
-                <Route path="projects" element={
-                  <div style={{ padding: '2rem' }}>
-                    <Heading level={1}>Projects</Heading>
-                    <Text size="md">Projects management page coming soon...</Text>
-                  </div>
-                } />
-                <Route path="settings" element={
-                  <div style={{ padding: '2rem' }}>
-                    <Heading level={1}>Settings</Heading>
-                    <Text size="md">Settings page coming soon...</Text>
-                  </div>
-                } />
-                <Route path="branding" element={
-                  <div style={{ padding: '2rem' }}>
-                    <Heading level={1}>Branding</Heading>
-                    <Text size="md">Branding editor coming soon...</Text>
-                  </div>
-                } />
-                <Route path="landing-page" element={
-                  <div style={{ padding: '2rem' }}>
-                    <Heading level={1}>Landing Page</Heading>
-                    <Text size="md">Landing page editor coming soon...</Text>
-                  </div>
-                } />
+                {/* JSON-driven pages - rendered from tenant UI config */}
+                <Route index element={<JsonPageRoute pagePath="/dashboard" pageTitle="Dashboard" />} />
+                <Route path="projects" element={<JsonPageRoute pagePath="/projects" pageTitle="Projects" />} />
+                <Route path="projects/:id" element={<JsonPageRoute pagePath="/projects/:id" pageTitle="Project Details" />} />
+                <Route path="employees" element={<JsonPageRoute pagePath="/employees" pageTitle="Employees" />} />
+                <Route path="employees/:id" element={<JsonPageRoute pagePath="/employees/:id" pageTitle="Employee Details" />} />
+                <Route path="tasks" element={<JsonPageRoute pagePath="/tasks" pageTitle="Tasks" />} />
+                <Route path="settings" element={<JsonPageRoute pagePath="/settings" pageTitle="Settings" />} />
+                <Route path="branding" element={<JsonPageRoute pagePath="/branding" pageTitle="Branding" />} />
+                <Route path="landing-page" element={<JsonPageRoute pagePath="/landing-page" pageTitle="Landing Page Editor" />} />
               </Route>
                 
               {/* Catch all */}
@@ -96,7 +80,7 @@ const App: React.FC = () => {
             </Routes>
           </Suspense>
         </BrowserRouter>
-      </UIProvider>
+      </UiProviderBridge>
     </ErrorBoundary>
   );
 };

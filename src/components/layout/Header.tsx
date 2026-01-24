@@ -1,58 +1,57 @@
 /**
  * Header Component
- * Application header with navigation
+ * Connects auth/tenant state to UI library header
+ * 
+ * Responsibilities:
+ * - Provide navigation data
+ * - Handle auth actions (logout)
+ * - Manage navigation behavior
+ * 
+ * Does NOT own:
+ * - Visual rendering (delegated to @sakhlaqi/ui)
+ * - Layout styling (delegated to @sakhlaqi/ui)
+ * - Responsive behavior (delegated to @sakhlaqi/ui)
  */
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Text } from '@sakhlaqi/ui';
+import { useNavigate } from 'react-router-dom';
+import { Header as UIHeader } from '@sakhlaqi/ui';
 import { useAuthStore, useTenantStore } from '../../stores';
-import './Header.css';
 
 export const Header: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuthStore();
   const { config } = useTenantStore();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
-    window.location.href = '/';
+    navigate('/');
   };
 
-  return (
-    <header className="header">
-      <div className="container header-content">
-        <Link to="/" className="header-logo">
-          {config?.branding.logo.light ? (
-            <img src={config.branding.logo.light} alt={config.branding.name} />
-          ) : (
-            <span className="header-logo-text">{config?.branding.name || 'Real Solutions'}</span>
-          )}
-        </Link>
+  const handleNavigation = (path: string) => {
+    navigate(path);
+  };
 
-        <nav className="header-nav">
-          {isAuthenticated ? (
-            <>
-              <Link to="/admin" className="header-link">
-                Admin Dashboard
-              </Link>
-              <Text size="sm" className="header-user">{user?.email}</Text>
-              <Button variant="text" onClick={handleLogout}>
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link to="/login">
-                <Button variant="text">
-                  Admin Login
-                </Button>
-              </Link>
-            </>
-          )}
-        </nav>
-      </div>
-    </header>
-  );
+  // Header configuration - data only
+  const headerConfig = {
+    brand: {
+      name: config?.branding.name || 'Real Solutions',
+      logo: config?.branding.logo?.light,
+      link: '/',
+    },
+    navigation: isAuthenticated ? [
+      { label: 'Admin Dashboard', path: '/admin' },
+    ] : [],
+    userMenu: isAuthenticated ? {
+      email: user?.email || '',
+      onLogout: handleLogout,
+    } : {
+      loginLink: '/login',
+      loginLabel: 'Admin Login',
+    },
+  };
+
+  return <UIHeader config={headerConfig} onNavigate={handleNavigation} />;
 };
 
 export default Header;
