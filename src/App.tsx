@@ -1,23 +1,22 @@
 /**
  * Main App Component
  * Sets up routing, theming, and bootstraps application
+ * 
+ * **Dynamic Routing:**
+ * Routes are now generated dynamically from tenant configuration.
+ * Each tenant can define their own routes, protected pages, and layouts.
  */
 
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Spinner } from '@sakhlaqi/ui';
 import { UiProviderBridge } from './app/UiProviderBridge';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { JsonPageRoute } from './components/JsonPageRoute';
+import { DynamicRoutes } from './components/DynamicRoutes';
 import { useAppBootstrap } from './hooks/useAppBootstrap';
 import './styles/global.css';
 
-// Simple layout wrappers
-const MainLayout = () => <Outlet />;
-const AdminLayout = () => <Outlet />;
-
 const App: React.FC = () => {
-  const { isInitialized, error } = useAppBootstrap();
+  const { isInitialized, error, routes } = useAppBootstrap();
 
   if (!isInitialized) {
     return (
@@ -42,47 +41,20 @@ const App: React.FC = () => {
   return (
     <UiProviderBridge provider="mui">
       <BrowserRouter>
-          <Suspense fallback={
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-              <Spinner size="large" />
-            </div>
-          }>
-            <Routes>
-              {/* Public routes with MainLayout */}
-              <Route path="/" element={<MainLayout />}>
-                <Route index element={<JsonPageRoute pagePath="/" pageTitle="Home" />} />
-              </Route>
-
-              {/* Login page (JSON-driven) */}
-              <Route path="/login" element={<JsonPageRoute pagePath="/login" pageTitle="Login" />} />
-              
-              {/* Protected admin routes with AdminLayout */}
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                }
-              >
-                {/* JSON-driven pages - rendered from tenant UI config */}
-                <Route index element={<JsonPageRoute pagePath="/dashboard" pageTitle="Dashboard" />} />
-                <Route path="projects" element={<JsonPageRoute pagePath="/projects" pageTitle="Projects" />} />
-                <Route path="projects/:id" element={<JsonPageRoute pagePath="/projects/:id" pageTitle="Project Details" />} />
-                <Route path="employees" element={<JsonPageRoute pagePath="/employees" pageTitle="Employees" />} />
-                <Route path="employees/:id" element={<JsonPageRoute pagePath="/employees/:id" pageTitle="Employee Details" />} />
-                <Route path="tasks" element={<JsonPageRoute pagePath="/tasks" pageTitle="Tasks" />} />
-                <Route path="settings" element={<JsonPageRoute pagePath="/settings" pageTitle="Settings" />} />
-                <Route path="branding" element={<JsonPageRoute pagePath="/branding" pageTitle="Branding" />} />
-                <Route path="landing-page" element={<JsonPageRoute pagePath="/landing-page" pageTitle="Landing Page Editor" />} />
-              </Route>
-                
-              {/* Catch all */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </UiProviderBridge>
+        <Suspense fallback={
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+            <Spinner size="large" />
+          </div>
+        }>
+          {/* Dynamic routes from tenant configuration */}
+          <DynamicRoutes 
+            routes={routes} 
+            defaultRoute="/"
+            notFoundRoute="/"
+          />
+        </Suspense>
+      </BrowserRouter>
+    </UiProviderBridge>
   );
 };
 

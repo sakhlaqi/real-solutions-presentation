@@ -6,12 +6,15 @@
 
 import { useEffect, useState } from 'react';
 import { useAuthStore, useTenantStore } from '../stores';
+import { DEFAULT_ROUTES, type RouteConfig } from '../types/routing';
 
 export const useAppBootstrap = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [routes, setRoutes] = useState<RouteConfig[]>(DEFAULT_ROUTES);
   const { initializeTenant } = useTenantStore();
   const { loadUser } = useAuthStore();
+  const config = useTenantStore((state) => state.config);
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -38,7 +41,18 @@ export const useAppBootstrap = () => {
     bootstrap();
   }, []);
 
-  return { isInitialized, error };
+  // Update routes when tenant config changes
+  useEffect(() => {
+    if (config?.routes && config.routes.length > 0) {
+      console.log('[useAppBootstrap] Loading dynamic routes from tenant config:', config.routes.length);
+      setRoutes(config.routes);
+    } else {
+      console.log('[useAppBootstrap] Using default routes');
+      setRoutes(DEFAULT_ROUTES);
+    }
+  }, [config]);
+
+  return { isInitialized, error, routes };
 };
 
 export default useAppBootstrap;

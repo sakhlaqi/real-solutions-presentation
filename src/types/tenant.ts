@@ -92,6 +92,7 @@ export interface TenantConfig {
   featureFlags: TenantFeatureFlags;
   layoutPreferences: TenantLayoutPreferences;
   landingPageSections: LandingPageSection[];
+  routes?: import('./routing').RouteConfig[]; // Dynamic routes configuration
   customSettings?: Record<string, any>;
 }
 
