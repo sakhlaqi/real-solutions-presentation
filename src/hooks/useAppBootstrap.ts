@@ -63,7 +63,13 @@ export const useAppBootstrap = () => {
     }
   }, [config]);
 
-  return { isInitialized, error, routes, tenantTheme, themeLoading };
+  return { 
+    isInitialized, 
+    error, 
+    routes, 
+    tenantTheme, 
+    themeLoading,
+  };
 };
 
 export default useAppBootstrap;
