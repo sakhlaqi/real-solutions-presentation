@@ -3,56 +3,6 @@
  * Defines the shape of tenant-specific configuration and branding
  */
 
-export interface TenantTheme {
-  colors: {
-    primary: string;
-    secondary: string;
-    accent: string;
-    background: string;
-    surface: string;
-    text: {
-      primary: string;
-      secondary: string;
-      inverse: string;
-    };
-    error: string;
-    success: string;
-    warning: string;
-  };
-  fonts: {
-    primary: string;
-    secondary: string;
-    sizes: {
-      xs: string;
-      sm: string;
-      base: string;
-      lg: string;
-      xl: string;
-      '2xl': string;
-      '3xl': string;
-    };
-  };
-  spacing: {
-    xs: string;
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-    '2xl': string;
-  };
-  borderRadius: {
-    sm: string;
-    md: string;
-    lg: string;
-    full: string;
-  };
-  shadows: {
-    sm: string;
-    md: string;
-    lg: string;
-  };
-}
-
 export interface TenantBranding {
   name: string;
   logo: {
@@ -88,7 +38,7 @@ export interface TenantConfig {
   slug: string;
   name: string;
   branding: TenantBranding;
-  theme: TenantTheme;
+  theme: import('./theme').TenantThemeConfig;
   featureFlags: TenantFeatureFlags;
   layoutPreferences: TenantLayoutPreferences;
   landingPageSections: LandingPageSection[];

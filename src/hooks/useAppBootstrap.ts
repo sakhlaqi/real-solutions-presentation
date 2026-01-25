@@ -7,11 +7,14 @@
 import { useEffect, useState } from 'react';
 import { useAuthStore, useTenantStore } from '../stores';
 import { DEFAULT_ROUTES, type RouteConfig } from '../types/routing';
+import type { TenantThemeConfig } from '../types/theme';
 
 export const useAppBootstrap = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [routes, setRoutes] = useState<RouteConfig[]>(DEFAULT_ROUTES);
+  const [tenantTheme, setTenantTheme] = useState<TenantThemeConfig | null>(null);
+  const [themeLoading, setThemeLoading] = useState(true);
   const { initializeTenant } = useTenantStore();
   const { loadUser } = useAuthStore();
   const config = useTenantStore((state) => state.config);
@@ -52,7 +55,15 @@ export const useAppBootstrap = () => {
     }
   }, [config]);
 
-  return { isInitialized, error, routes };
+  // Extract theme from config
+  useEffect(() => {
+    if (config?.theme) {
+      setTenantTheme(config.theme);
+      setThemeLoading(false);
+    }
+  }, [config]);
+
+  return { isInitialized, error, routes, tenantTheme, themeLoading };
 };
 
 export default useAppBootstrap;
