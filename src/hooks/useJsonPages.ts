@@ -5,9 +5,9 @@
  * Provides page configs for routing and handles loading/error states.
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTenantStore } from '../stores';
-import { fetchTenantUiConfig, getPageConfig } from '../data';
+import { fetchTenantUiConfig } from '../data';
 import type { PageConfig } from '@sakhlaqi/ui';
 
 interface UseJsonPagesResult {
@@ -138,7 +138,11 @@ export function useJsonPage(pagePath: string) {
       setError(null);
 
       try {
-        const config = await getPageConfig(tenantId, pagePath);
+        const uiConfig = await fetchTenantUiConfig(tenantId);
+        const config = uiConfig.pages[pagePath];
+        if (!config) {
+          throw new Error(`Page not found: ${pagePath}`);
+        }
         setPageConfig(config);
         setError(null);
       } catch (err) {

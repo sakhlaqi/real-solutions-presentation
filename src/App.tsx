@@ -4,14 +4,17 @@
  */
 
 import React, { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ErrorBoundary, Spinner } from '@sakhlaqi/ui';
-import { UiProviderBridge } from './app';
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { Spinner } from '@sakhlaqi/ui';
+import { UiProviderBridge } from './app/UiProviderBridge';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { MainLayout, AdminLayout } from './components/layout';
 import { JsonPageRoute } from './components/JsonPageRoute';
 import { useAppBootstrap } from './hooks/useAppBootstrap';
 import './styles/global.css';
+
+// Simple layout wrappers
+const MainLayout = () => <Outlet />;
+const AdminLayout = () => <Outlet />;
 
 const App: React.FC = () => {
   const { isInitialized, error } = useAppBootstrap();
@@ -37,9 +40,8 @@ const App: React.FC = () => {
   }
 
   return (
-    <ErrorBoundary>
-      <UiProviderBridge provider="mui">
-        <BrowserRouter>
+    <UiProviderBridge provider="mui">
+      <BrowserRouter>
           <Suspense fallback={
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
               <Spinner size="large" />
@@ -81,7 +83,6 @@ const App: React.FC = () => {
           </Suspense>
         </BrowserRouter>
       </UiProviderBridge>
-    </ErrorBoundary>
   );
 };
 

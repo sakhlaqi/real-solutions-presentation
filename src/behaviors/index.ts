@@ -15,5 +15,3 @@ export {
 } from './behaviorRegistry';
 
 export type { BehaviorFn } from './behaviorRegistry';
-
-export default behaviorRegistry;

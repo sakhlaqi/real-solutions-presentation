@@ -2,5 +2,5 @@
  * Data layer exports
  */
 
-export * from './fetchTenantUiConfig';
+export { fetchTenantUiConfig } from './fetchTenantUiConfig';
 export * from './dataSourceResolver';

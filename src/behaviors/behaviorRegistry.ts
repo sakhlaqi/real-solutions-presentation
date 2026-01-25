@@ -29,7 +29,7 @@
  * Behaviors can be synchronous or asynchronous
  * They receive optional parameters (row data, event data, etc.)
  */
-export type BehaviorFn = (...args: unknown[]) => void | Promise<void>;
+export type BehaviorFn = (...args: any[]) => void | Promise<void>;
 
 /**
  * Behavior Context
@@ -40,6 +40,8 @@ export type BehaviorFn = (...args: unknown[]) => void | Promise<void>;
 interface BehaviorContext {
   /** React Router navigate function */
   navigate?: (path: string, options?: { replace?: boolean; state?: unknown }) => void;
+  /** Navigate back */
+  navigateBack?: () => void;
   /** Show notification/toast */
   showNotification?: (message: string, type?: 'success' | 'error' | 'info' | 'warning') => void;
   /** Show confirmation dialog */

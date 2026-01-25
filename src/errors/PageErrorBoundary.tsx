@@ -15,7 +15,7 @@
  * Wrap around <JsonPage /> in routing
  */
 
-import React, { Component, ReactNode } from 'react';
+import React, { Component, type ReactNode } from 'react';
 import { Heading, Text, Button, Card } from '@sakhlaqi/ui';
 import { useTenantStore } from '../stores';
 
@@ -109,7 +109,7 @@ class PageErrorBoundaryClass extends Component<
     console.error('[PageErrorBoundary] Error caught:', errorContext);
 
     // In production, send to error tracking service
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.MODE === 'production') {
       this.sendToErrorTracking(errorContext);
     }
   }
@@ -226,7 +226,7 @@ class PageErrorBoundaryClass extends Component<
   private getDeveloperDetails(): ReactNode {
     const { error, errorInfo, errorId } = this.state;
     
-    if (process.env.NODE_ENV !== 'development') {
+    if (import.meta.env.MODE !== 'development') {
       return null;
     }
 
@@ -288,8 +288,9 @@ class PageErrorBoundaryClass extends Component<
           maxWidth: '800px',
           margin: '0 auto',
         }}>
-          <Card style={{ padding: '2rem' }}>
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{ padding: '2rem' }}>
+            <Card>
+              <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
               <div style={{ 
                 fontSize: '3rem', 
                 marginBottom: '1rem',
@@ -298,13 +299,13 @@ class PageErrorBoundaryClass extends Component<
                 ⚠️
               </div>
               <Heading level={2}>Page Error</Heading>
-              <Text size="md" style={{ marginTop: '1rem', color: '#666' }}>
-                {this.getUserMessage(error)}
-              </Text>
+              <div style={{ marginTop: '1rem', color: '#666' }}>
+                <Text size="md">{this.getUserMessage(error)}</Text>
+              </div>
               {pagePath && (
-                <Text size="sm" style={{ marginTop: '0.5rem', color: '#999' }}>
-                  Page: {pagePath}
-                </Text>
+                <div style={{ marginTop: '0.5rem', color: '#999' }}>
+                  <Text size="sm">Page: {pagePath}</Text>
+                </div>
               )}
             </div>
 
@@ -332,7 +333,8 @@ class PageErrorBoundaryClass extends Component<
             </div>
 
             {this.getDeveloperDetails()}
-          </Card>
+            </Card>
+          </div>
         </div>
       );
     }

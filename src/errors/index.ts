@@ -5,4 +5,3 @@
  */
 
 export { PageErrorBoundary } from './PageErrorBoundary';
-export default PageErrorBoundary;

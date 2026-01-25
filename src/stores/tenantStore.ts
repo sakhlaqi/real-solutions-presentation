@@ -12,6 +12,7 @@ interface TenantState {
   tenant: Tenant | null;
   config: TenantConfig | null;
   tenantSlug: string;
+  tenantId?: string;
   isLoading: boolean;
   error: string | null;
   isInitialized: boolean;

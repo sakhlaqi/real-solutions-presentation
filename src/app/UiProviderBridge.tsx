@@ -134,7 +134,7 @@ export const UiProviderBridge: React.FC<UiProviderBridgeProps> = ({
   }, [config?.theme, themeMode]);
 
   // Log theme configuration in development
-  if (process.env.NODE_ENV === 'development' && config) {
+  if (import.meta.env.MODE === 'development' && config) {
     console.log('[UiProviderBridge] Tenant theme:', config.theme);
     console.log('[UiProviderBridge] UI library theme:', uiTheme);
   }

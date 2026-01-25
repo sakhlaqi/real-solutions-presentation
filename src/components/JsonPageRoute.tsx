@@ -93,9 +93,9 @@ export const JsonPageRoute: React.FC<JsonPageRouteProps> = ({
         margin: '0 auto'
       }}>
         <Heading level={2}>Configuration Error</Heading>
-        <Text size="md" style={{ margin: '1rem 0', color: '#d32f2f' }}>
-          {error}
-        </Text>
+        <div style={{ margin: '1rem 0', color: '#d32f2f' }}>
+          <Text size="md">{error}</Text>
+        </div>
         <Button onClick={() => window.location.reload()}>
           Retry
         </Button>
@@ -113,12 +113,14 @@ export const JsonPageRoute: React.FC<JsonPageRouteProps> = ({
         margin: '0 auto'
       }}>
         <Heading level={2}>Page Not Found</Heading>
-        <Text size="md" style={{ margin: '1rem 0' }}>
-          The page "{pagePath}" is not configured for this tenant.
-          {pageTitle && ` (${pageTitle})`}
-        </Text>
+        <div style={{ margin: '1rem 0' }}>
+          <Text size="md">
+            The page "{pagePath}" is not configured for this tenant.
+            {pageTitle && ` (${pageTitle})`}
+          </Text>
+        </div>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem' }}>
-          <Button onClick={() => navigate('/admin')} variant="primary">
+          <Button onClick={() => navigate('/admin')} variant="contained">
             Go to Dashboard
           </Button>
           <Button onClick={() => navigate(-1)} variant="outlined">

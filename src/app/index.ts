@@ -5,4 +5,3 @@
  */
 
 export { UiProviderBridge } from './UiProviderBridge';
-export default UiProviderBridge;
