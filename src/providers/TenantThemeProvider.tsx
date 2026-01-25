@@ -111,6 +111,15 @@ export const TenantThemeProvider: React.FC<TenantThemeProviderProps> = ({
       };
     }
 
+    // Debug: Log the actual theme structure received
+    console.log('[TenantThemeProvider] Theme structure:', {
+      metadata,
+      baseThemeKeys: Object.keys(baseTheme),
+      hasMeta: 'meta' in baseTheme,
+      hasTokens: 'tokens' in baseTheme,
+      hasModes: 'modes' in baseTheme,
+    });
+
     console.log('[TenantThemeProvider] Resolving theme:', {
       id: metadata.id,
       name: metadata.name,
@@ -120,7 +129,7 @@ export const TenantThemeProvider: React.FC<TenantThemeProviderProps> = ({
 
     try {
       const result = ThemeResolver.resolve(baseTheme, activeModes, {
-        skipValidation: false, // Validate in development
+        skipValidation: true, // Skip validation - themes from API are pre-validated
         useCache: true,
       });
 

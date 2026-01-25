@@ -5,13 +5,19 @@
  * Supports protected routes, nested layouts, and feature flags.
  */
 
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { JsonPageRoute } from './JsonPageRoute';
 import { ProtectedRoute } from './ProtectedRoute';
 import { useTenantStore } from '../stores';
 import type { RouteConfig, RouteLayout } from '../types/routing';
 import { sortRoutes } from '../types/routing';
+import type { TenantConfig } from '../types';
+
+/**
+ * Stable empty object to avoid creating new references
+ */
+const EMPTY_FEATURE_FLAGS: Record<string, boolean> = {};
 
 /**
  * Layout Components
@@ -78,22 +84,21 @@ export const DynamicRoutes: React.FC<DynamicRoutesProps> = ({
   defaultRoute = '/',
   notFoundRoute = '/'
 }) => {
-  const featureFlags = useTenantStore((state) => state.config?.featureFlags || {});
+  const featureFlagsSelector = useCallback((state: { config: TenantConfig | null }) => state.config?.featureFlags || EMPTY_FEATURE_FLAGS, []);
+  const featureFlags = useTenantStore(featureFlagsSelector);
 
-  // Filter routes by feature flags
-  const activeRoutes = routes.filter(route => {
-    if (!route.featureFlag) return true;
-    return featureFlags[route.featureFlag] === true;
-  });
+  // Filter routes by feature flags (memoized)
+  const activeRoutes = useMemo(() => {
+    return routes.filter(route => {
+      if (!route.featureFlag) return true;
+      return featureFlags[route.featureFlag] === true;
+    });
+  }, [routes, featureFlags]);
 
-  // Sort routes for proper matching priority
-  const sortedRoutes = sortRoutes(activeRoutes);
-
-  console.log('[DynamicRoutes] Rendering routes:', {
-    total: routes.length,
-    active: activeRoutes.length,
-    sorted: sortedRoutes.length
-  });
+  // Sort routes for proper matching priority (memoized)
+  const sortedRoutes = useMemo(() => {
+    return sortRoutes(activeRoutes);
+  }, [activeRoutes]);
 
   return (
     <Routes>
@@ -144,23 +149,26 @@ export const DynamicRoutesGrouped: React.FC<DynamicRoutesProps> = ({
   defaultRoute = '/',
   notFoundRoute = '/'
 }) => {
-  const featureFlags = useTenantStore((state) => state.config?.featureFlags || {});
+  const featureFlagsSelector = useCallback((state: { config: TenantConfig | null }) => state.config?.featureFlags || EMPTY_FEATURE_FLAGS, []);
+  const featureFlags = useTenantStore(featureFlagsSelector);
 
-  // Filter routes by feature flags
-  const activeRoutes = routes.filter(route => {
-    if (!route.featureFlag) return true;
-    return featureFlags[route.featureFlag] === true;
-  });
+  // Filter routes by feature flags (memoized)
+  const activeRoutes = useMemo(() => {
+    return routes.filter(route => {
+      if (!route.featureFlag) return true;
+      return featureFlags[route.featureFlag] === true;
+    });
+  }, [routes, featureFlags]);
 
-  // Group routes by layout and protection
-  const groupedRoutes = activeRoutes.reduce((acc, route) => {
-    const key = `${route.layout}-${route.protected}`;
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(route);
-    return acc;
-  }, {} as Record<string, RouteConfig[]>);
-
-  console.log('[DynamicRoutesGrouped] Route groups:', Object.keys(groupedRoutes));
+  // Group routes by layout and protection (memoized)
+  const groupedRoutes = useMemo(() => {
+    return activeRoutes.reduce((acc, route) => {
+      const key = `${route.layout}-${route.protected}`;
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(route);
+      return acc;
+    }, {} as Record<string, RouteConfig[]>);
+  }, [activeRoutes]);
 
   return (
     <Routes>
