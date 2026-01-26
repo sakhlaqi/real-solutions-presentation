@@ -3,6 +3,8 @@
  * Defines the shape of tenant-specific configuration and branding
  */
 
+import type { PageConfig } from '@sakhlaqi/ui';
+
 export interface TenantBranding {
   name: string;
   logo: {
@@ -18,19 +20,9 @@ export interface TenantFeatureFlags {
   [key: string]: boolean;
 }
 
-export interface TenantLayoutPreferences {
-  headerStyle?: 'default' | 'minimal' | 'full';
-  footerStyle?: 'default' | 'minimal' | 'full';
-  landingPageLayout?: 'single' | 'multi-section';
-}
-
-export interface LandingPageSection {
-  id: string;
-  componentType: string;
-  order: number;
-  visible: boolean;
-  props: Record<string, any>;
-  featureFlag?: string;
+export interface PageConfigWrapper {
+  pages: Record<string, PageConfig>;
+  version: string;
 }
 
 export interface TenantConfig {
@@ -40,8 +32,7 @@ export interface TenantConfig {
   branding: TenantBranding;
   theme: import('./theme').TenantThemeConfig;
   featureFlags: TenantFeatureFlags;
-  layoutPreferences: TenantLayoutPreferences;
-  landingPageSections: LandingPageSection[];
+  page_config: PageConfigWrapper;
   routes?: import('./routing').RouteConfig[]; // Dynamic routes configuration
   customSettings?: Record<string, any>;
 }

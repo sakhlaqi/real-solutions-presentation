@@ -48,6 +48,7 @@ export const useTenantStore = create<TenantStore>((set, get) => ({
 
       set({
         tenant,
+        tenantId: tenant.id,
         config,
         isLoading: false,
         error: null,

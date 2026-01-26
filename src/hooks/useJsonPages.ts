@@ -2,12 +2,12 @@
  * useJsonPages Hook
  * 
  * Fetches and manages tenant-specific page configurations from the API.
+ * Now uses the cached config from tenant store to avoid redundant API calls.
  * Provides page configs for routing and handles loading/error states.
  */
 
 import React, { useState, useEffect } from 'react';
 import { useTenantStore } from '../stores';
-import { fetchTenantUiConfig } from '../data';
 import type { PageConfig } from '@sakhlaqi/ui';
 
 interface UseJsonPagesResult {
@@ -30,7 +30,6 @@ interface UseJsonPagesResult {
 /**
  * Hook to fetch and manage JSON page configurations
  * 
- * @param options - Configuration options
  * @returns Page configurations and utilities
  * 
  * @example
@@ -43,50 +42,44 @@ interface UseJsonPagesResult {
  * return <JsonPage pageConfig={pages['/dashboard']} />;
  * ```
  */
-export function useJsonPages(options?: {
-  /** Skip cache and force fresh fetch */
-  skipCache?: boolean;
-}): UseJsonPagesResult {
-  const { tenantId } = useTenantStore();
+export function useJsonPages(): UseJsonPagesResult {
+  const config = useTenantStore((state) => state.config);
+  const { loadTenantConfig } = useTenantStore();
   const [pages, setPages] = useState<Record<string, PageConfig>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState<string>();
-  const [updatedAt, setUpdatedAt] = useState<string>();
 
-  const fetchPages = React.useCallback(async () => {
-    if (!tenantId) {
-      setError('No tenant ID available');
+  // Extract pages from config when it changes
+  useEffect(() => {
+    if (config?.page_config) {
+      setPages(config.page_config.pages || {});
+      setVersion(config.page_config.version);
+      setError(null);
       setIsLoading(false);
-      return;
+    } else if (config !== null) {
+      // Config loaded but no page_config
+      setPages({});
+      setError('No page configuration available');
+      setIsLoading(false);
     }
+  }, [config]);
 
+  const refetch = React.useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const config = await fetchTenantUiConfig(tenantId, {
-        skipCache: options?.skipCache,
-      });
-
-      setPages(config.pages);
-      setVersion(config.version);
-      setUpdatedAt(config.updatedAt);
-      setError(null);
+      await loadTenantConfig();
+      // Config update will trigger the useEffect above
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch UI configuration';
       console.error('[useJsonPages] Error fetching pages:', err);
       setError(errorMessage);
       setPages({});
-    } finally {
       setIsLoading(false);
     }
-  }, [tenantId, options?.skipCache]);
-
-  // Fetch on mount and when tenant changes
-  useEffect(() => {
-    fetchPages();
-  }, [fetchPages]);
+  }, [loadTenantConfig]);
 
   // Get specific page
   const getPage = (path: string): PageConfig | null => {
@@ -98,8 +91,8 @@ export function useJsonPages(options?: {
     isLoading,
     error,
     version,
-    updatedAt,
-    refetch: fetchPages,
+    updatedAt: undefined, // Not available in TenantConfig
+    refetch,
     getPage,
   };
 }
@@ -121,42 +114,29 @@ export function useJsonPages(options?: {
  * ```
  */
 export function useJsonPage(pagePath: string) {
-  const { tenantId } = useTenantStore();
+  const config = useTenantStore((state) => state.config);
   const [pageConfig, setPageConfig] = useState<PageConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPage = async () => {
-      if (!tenantId) {
-        setError('No tenant ID available');
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const uiConfig = await fetchTenantUiConfig(tenantId);
-        const config = uiConfig.pages[pagePath];
-        if (!config) {
-          throw new Error(`Page not found: ${pagePath}`);
-        }
-        setPageConfig(config);
+    if (config?.page_config) {
+      const page = config.page_config.pages[pagePath];
+      if (page) {
+        setPageConfig(page);
         setError(null);
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : `Failed to fetch page: ${pagePath}`;
-        console.error(`[useJsonPage] Error fetching page ${pagePath}:`, err);
-        setError(errorMessage);
+      } else {
         setPageConfig(null);
-      } finally {
-        setIsLoading(false);
+        setError(`Page not found: ${pagePath}`);
       }
-    };
-
-    fetchPage();
-  }, [tenantId, pagePath]);
+      setIsLoading(false);
+    } else if (config !== null) {
+      // Config loaded but no page_config
+      setPageConfig(null);
+      setError('No page configuration available');
+      setIsLoading(false);
+    }
+  }, [config, pagePath]);
 
   return {
     pageConfig,

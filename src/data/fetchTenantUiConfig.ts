@@ -53,39 +53,43 @@ const CACHE_TTL = 5 * 60 * 1000;
  * 
  * **API Endpoint:**
  * ```
- * GET /api/v1/tenants/{tenantId}/ui-config/
+ * GET /api/v1/tenants/{tenantId}/config/
  * ```
  * 
- * **Expected Response:**
+ * **Response (page_config extracted):**
  * ```json
  * {
- *   "pages": {
- *     "/dashboard": { ... },
- *     "/employees": { ... },
- *     "/settings": { ... }
+ *   "page_config": {
+ *     "pages": {
+ *       "/dashboard": { ... },
+ *       "/employees": { ... },
+ *       "/settings": { ... }
+ *     },
+ *     "version": "1.0.0"
  *   },
- *   "version": "1.0.0",
- *   "updatedAt": "2026-01-24T10:00:00Z"
+ *   "branding": { ... },
+ *   "theme": { ... },
+ *   "routes": [ ... ]
  * }
  * ```
  * 
  * **Caching Strategy:**
- * - Caches per tenant ID
+ * - Caches per tenant slug
  * - TTL: 5 minutes
  * - Manual cache invalidation supported
  * 
- * @param tenantId - The tenant ID to fetch configuration for
+ * @param tenantSlug - The tenant slug to fetch configuration for
  * @param options - Optional configuration
  * @returns Promise resolving to tenant UI configuration
  * 
  * @example
  * ```typescript
- * const uiConfig = await fetchTenantUiConfig('tenant-123');
+ * const uiConfig = await fetchTenantUiConfig('acme-corp');
  * const dashboardConfig = uiConfig.pages['/dashboard'];
  * ```
  */
 export async function fetchTenantUiConfig(
-  tenantId: string,
+  tenantSlug: string,
   options: {
     /** Force bypass cache and fetch fresh data */
     skipCache?: boolean;
@@ -99,32 +103,40 @@ export async function fetchTenantUiConfig(
 
   // Check cache first (unless skipCache is true)
   if (!skipCache) {
-    const cached = getCachedConfig(tenantId);
+    const cached = getCachedConfig(tenantSlug);
     if (cached) {
-      console.log(`[fetchTenantUiConfig] Cache hit for tenant: ${tenantId}`);
+      console.log(`[fetchTenantUiConfig] Cache hit for tenant: ${tenantSlug}`);
       return cached;
     }
   }
 
   // Fetch from API
-  console.log(`[fetchTenantUiConfig] Fetching UI config for tenant: ${tenantId}`);
+  console.log(`[fetchTenantUiConfig] Fetching UI config for tenant: ${tenantSlug}`);
   
   try {
-    const config = publicEndpoint
-      ? await apiClient.publicGet<TenantUiConfig>(`/tenants/${tenantId}/ui-config/`)
-      : await apiClient.get<TenantUiConfig>(`/tenants/${tenantId}/ui-config/`);
+    // Fetch complete tenant config
+    const fullConfig = publicEndpoint
+      ? await apiClient.publicGet<{ page_config?: { pages: Record<string, PageConfig>; version?: string }; updated_at?: string }>(`/tenants/${tenantSlug}/config/`)
+      : await apiClient.get<{ page_config?: { pages: Record<string, PageConfig>; version?: string }; updated_at?: string }>(`/tenants/${tenantSlug}/config/`);
+
+    // Extract page_config from full config
+    const config: TenantUiConfig = {
+      pages: fullConfig.page_config?.pages || {},
+      version: fullConfig.page_config?.version,
+      updatedAt: fullConfig.updated_at,
+    };
 
     // Validate page configurations if not skipped
     if (!skipValidation && config.pages) {
-      validatePagesConfig(config.pages, tenantId);
+      validatePagesConfig(config.pages, tenantSlug);
     }
 
     // Cache the result
-    setCachedConfig(tenantId, config);
+    setCachedConfig(tenantSlug, config);
 
     return config;
   } catch (error) {
-    console.error(`[fetchTenantUiConfig] Failed to fetch UI config for tenant: ${tenantId}`, error);
+    console.error(`[fetchTenantUiConfig] Failed to fetch UI config for tenant: ${tenantSlug}`, error);
     throw error;
   }
 }
@@ -169,9 +181,17 @@ export async function fetchTenantUiConfigBySlug(
   console.log(`[fetchTenantUiConfigBySlug] Fetching UI config for slug: ${slug}`);
   
   try {
-    const config = publicEndpoint
-      ? await apiClient.publicGet<TenantUiConfig>(`/tenants/${slug}/ui-config/`)
-      : await apiClient.get<TenantUiConfig>(`/tenants/${slug}/ui-config/`);
+    // Fetch complete tenant config
+    const fullConfig = publicEndpoint
+      ? await apiClient.publicGet<{ page_config?: { pages: Record<string, PageConfig>; version?: string }; updated_at?: string }>(`/tenants/${slug}/config/`)
+      : await apiClient.get<{ page_config?: { pages: Record<string, PageConfig>; version?: string }; updated_at?: string }>(`/tenants/${slug}/config/`);
+
+    // Extract page_config from full config
+    const config: TenantUiConfig = {
+      pages: fullConfig.page_config?.pages || {},
+      version: fullConfig.page_config?.version,
+      updatedAt: fullConfig.updated_at,
+    };
 
     // Validate page configurations if not skipped
     if (!skipValidation && config.pages) {
@@ -191,18 +211,18 @@ export async function fetchTenantUiConfigBySlug(
 /**
  * Get specific page configuration
  * 
- * @param tenantId - The tenant ID
+ * @param tenantSlug - The tenant slug
  * @param pagePath - The page route path (e.g., "/dashboard")
  * @param options - Optional configuration
  * @returns Promise resolving to page configuration or null if not found
  * 
  * @example
  * ```typescript
- * const dashboardConfig = await getPageConfig('tenant-123', '/dashboard');
+ * const dashboardConfig = await getPageConfig('acme-corp', '/dashboard');
  * ```
  */
 export async function getPageConfig(
-  tenantId: string,
+  tenantSlug: string,
   pagePath: string,
   options?: {
     skipCache?: boolean;
@@ -210,7 +230,7 @@ export async function getPageConfig(
     skipValidation?: boolean;
   }
 ): Promise<PageConfig | null> {
-  const uiConfig = await fetchTenantUiConfig(tenantId, options);
+  const uiConfig = await fetchTenantUiConfig(tenantSlug, options);
   return uiConfig.pages[pagePath] || null;
 }
 
