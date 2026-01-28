@@ -3,7 +3,7 @@
  * Defines the shape of tenant-specific configuration and branding
  */
 
-import type { PageConfig } from '@sakhlaqi/ui';
+import type { TemplatePage } from './template';
 
 export interface TenantBranding {
   name: string;
@@ -21,8 +21,11 @@ export interface TenantFeatureFlags {
 }
 
 export interface PageConfigWrapper {
-  pages: Record<string, PageConfig>;
+  pages: Record<string, TemplatePage>;
   version: string;
+  template_id?: string | null;
+  template_name?: string | null;
+  template_category?: string;
 }
 
 export interface TenantConfig {
@@ -31,6 +34,10 @@ export interface TenantConfig {
   name: string;
   branding: TenantBranding;
   theme: import('./theme').TenantThemeConfig;
+  template?: {
+    template_id: string;
+    version?: string;
+  };
   featureFlags: TenantFeatureFlags;
   page_config: PageConfigWrapper;
   routes?: import('./routing').RouteConfig[]; // Dynamic routes configuration

@@ -4,15 +4,18 @@
  * Fetches and manages tenant-specific page configurations from the API.
  * Now uses the cached config from tenant store to avoid redundant API calls.
  * Provides page configs for routing and handles loading/error states.
+ * 
+ * NOTE: Returns template-based pages (sections format), which will be
+ * automatically converted to PageConfig format (slots) by JsonPage component.
  */
 
 import React, { useState, useEffect } from 'react';
 import { useTenantStore } from '../stores';
-import type { PageConfig } from '@sakhlaqi/ui';
+import type { TemplatePage } from '../types/template';
 
 interface UseJsonPagesResult {
-  /** Map of page paths to page configurations */
-  pages: Record<string, PageConfig>;
+  /** Map of page paths to page configurations (template format) */
+  pages: Record<string, TemplatePage>;
   /** Loading state */
   isLoading: boolean;
   /** Error message if fetch failed */
@@ -24,7 +27,7 @@ interface UseJsonPagesResult {
   /** Refetch UI config */
   refetch: () => Promise<void>;
   /** Get specific page config */
-  getPage: (path: string) => PageConfig | null;
+  getPage: (path: string) => TemplatePage | null;
 }
 
 /**
@@ -39,13 +42,13 @@ interface UseJsonPagesResult {
  * if (isLoading) return <Spinner />;
  * if (error) return <ErrorMessage message={error} />;
  * 
- * return <JsonPage pageConfig={pages['/dashboard']} />;
+ * return <JsonPage pageConfig={pages['home']} />;
  * ```
  */
 export function useJsonPages(): UseJsonPagesResult {
   const config = useTenantStore((state) => state.config);
   const { loadTenantConfig } = useTenantStore();
-  const [pages, setPages] = useState<Record<string, PageConfig>>({});
+  const [pages, setPages] = useState<Record<string, TemplatePage>>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState<string>();
@@ -82,7 +85,7 @@ export function useJsonPages(): UseJsonPagesResult {
   }, [loadTenantConfig]);
 
   // Get specific page
-  const getPage = (path: string): PageConfig | null => {
+  const getPage = (path: string): TemplatePage | null => {
     return pages[path] || null;
   };
 
@@ -115,7 +118,7 @@ export function useJsonPages(): UseJsonPagesResult {
  */
 export function useJsonPage(pagePath: string) {
   const config = useTenantStore((state) => state.config);
-  const [pageConfig, setPageConfig] = useState<PageConfig | null>(null);
+  const [pageConfig, setPageConfig] = useState<TemplatePage | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

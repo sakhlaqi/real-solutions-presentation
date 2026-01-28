@@ -64,27 +64,33 @@ export const mockTenantConfig: TenantConfig = {
     version: '1.0.0',
     pages: {
       '/home': {
-        template: 'landing-page',
-        slots: {
-          hero: {
+        id: 'home',
+        title: 'Home',
+        layout: { type: 'default' },
+        sections: [
+          {
+            id: 'hero',
             type: 'HeroSection',
             props: {
               title: 'Welcome to Demo Corp',
               subtitle: 'Testing templates and routing',
             },
           },
-        },
+        ],
       },
       '/login': {
-        template: 'sign-in',
-        slots: {
-          main: {
+        id: 'login',
+        title: 'Login',
+        layout: { type: 'default' },
+        sections: [
+          {
+            id: 'main',
             type: 'SignInForm',
             props: {
               title: 'Sign In',
             },
           },
-        },
+        ],
       },
     },
   },

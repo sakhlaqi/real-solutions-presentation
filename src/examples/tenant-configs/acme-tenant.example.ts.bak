@@ -75,9 +75,11 @@ export const acmeTenantConfig: TenantConfig = {
     version: '1.0.0',
     pages: {
       '/home': {
-        template: 'landing-page',
-        slots: {
-          hero: {
+        id: 'home',
+        path: '/home',
+        sections: [
+          {
+            id: 'hero',
             type: 'HeroSection',
             props: {
               title: 'Welcome to Acme Corporation',
@@ -87,7 +89,8 @@ export const acmeTenantConfig: TenantConfig = {
               backgroundImage: '/images/hero-bg.jpg',
             },
           },
-          features: {
+          {
+            id: 'features',
             type: 'FeaturesSection',
             props: {
               title: 'Our Features',
@@ -98,12 +101,14 @@ export const acmeTenantConfig: TenantConfig = {
               ],
             },
           },
-        },
+        ],
       },
       '/login': {
-        template: 'sign-in',
-        slots: {
-          main: {
+        id: 'login',
+        path: '/login',
+        sections: [
+          {
+            id: 'main',
             type: 'SignInForm',
             props: {
               title: 'Sign In',

@@ -3,18 +3,21 @@
  * 
  * Bridge component that delegates all UI rendering to the UI library's PageRenderer.
  * Acts as the single point where JSON page configurations are converted to React components.
+ * Supports both template-based pages (sections) and legacy PageConfig format (slots).
  */
 
 import React from 'react';
 import { PageRenderer, validatePageConfig, getValidationSummary } from '@sakhlaqi/ui';
 import type { PageConfig } from '@sakhlaqi/ui';
+import { adaptPageConfig } from '../adapters/templateAdapter';
+import type { TemplatePage } from '../types/template';
 
 /**
  * JsonPage Props
  */
 export interface JsonPageProps {
-  /** Page configuration (JSON object) */
-  pageConfig: PageConfig | null;
+  /** Page configuration (JSON object) - can be template format or PageConfig format */
+  pageConfig: TemplatePage | PageConfig | null;
   
   /** Loading component */
   loading?: React.ReactNode;
@@ -107,7 +110,8 @@ function DefaultLoadingComponent() {
  * ```
  * 
  * **Responsibilities:**
- * - Accept page configuration JSON
+ * - Accept page configuration JSON (template or legacy format)
+ * - Convert template format to PageConfig format if needed
  * - Validate configuration (handled by PageRenderer)
  * - Delegate rendering to UI library's PageRenderer
  * - Handle missing or invalid configurations
@@ -136,8 +140,16 @@ export const JsonPage: React.FC<JsonPageProps> = ({
     );
   }
 
+  // Convert template format to PageConfig format if needed
+  const adaptedConfig = adaptPageConfig(pageConfig);
+  
+  if (debug) {
+    console.log('[JsonPage] Original page config:', pageConfig);
+    console.log('[JsonPage] Adapted page config:', adaptedConfig);
+  }
+
   // Validate page configuration using UI library schema
-  const validationResult = validatePageConfig(pageConfig);
+  const validationResult = validatePageConfig(adaptedConfig);
   
   if (!validationResult.success) {
     const errorSummary = getValidationSummary(validationResult.errors || []);
